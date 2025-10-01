@@ -1,21 +1,18 @@
 "use client";
-import React, { useState } from "react";
-import { Container } from "./Container";
 import Link from "next/link";
+import { useState } from "react";
+import { Container } from "./Container";
 
+import { protectedRoutes } from "@/constants";
+import { useUser } from "@/context/UserContext";
 import { CloseIcon, HamburgerIcon } from "@/icons/general";
-import {
-  AnimatePresence,
-  motion,
-} from "motion/react";
-import { ModeToggle } from "./ModeToggle";
+import { logout } from "@/services/AuthService";
+import { IUser } from "@/types";
+import { AnimatePresence, motion } from "motion/react";
+import { usePathname, useRouter } from "next/navigation";
 import Logo from "../Logo";
 import { Button } from "../ui/button";
-import { useUser } from "@/context/UserContext";
-import { logout } from "@/services/AuthService";
-import { protectedRoutes } from "@/constants";
-import { usePathname, useRouter } from "next/navigation";
-import { IUser } from "@/types";
+import { ModeToggle } from "./ModeToggle";
 
 const items = [
   {
@@ -45,6 +42,7 @@ export const Navbar = () => {
     logout();
     setUser(null);
     setIsLoading(false);
+
     if (protectedRoutes.some((route) => pathname.match(route))) {
       router.push("/");
     }
@@ -53,13 +51,21 @@ export const Navbar = () => {
   return (
     <Container as="nav" className="">
       {/* <FloatingNav items={items} /> */}
-      <DesktopNav items={items} user={user} handleLogOut={handleLogOut}/>
-      <MobileNav items={items} user={user} handleLogOut={handleLogOut}/>
+      <DesktopNav items={items} user={user} handleLogOut={handleLogOut} />
+      <MobileNav items={items} user={user} handleLogOut={handleLogOut} />
     </Container>
   );
 };
 
-const MobileNav = ({ items, user, handleLogOut }: { items: { title: string; href: string }[], user: IUser | null, handleLogOut: () => void }) => {
+const MobileNav = ({
+  items,
+  user,
+  handleLogOut,
+}: {
+  items: { title: string; href: string }[];
+  user: IUser | null;
+  handleLogOut: () => void;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="relative flex items-center justify-between p-2 md:hidden">
@@ -114,19 +120,27 @@ const MobileNav = ({ items, user, handleLogOut }: { items: { title: string; href
                   </motion.div>
                 </Link>
               ))}
-              <div className="mt-4 p-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: items.length * 0.1 }}
+              ></motion.div>
+
+              <div className="mt-4 p-4 space-y-3">
+                {user && (
+                  <Button asChild className="w-full" variant={"outline"}>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </Button>
+                )}
                 {user ? (
                   <Button onClick={handleLogOut} className="w-full">
                     Logout
                   </Button>
                 ) : (
                   <Button asChild className="w-full">
-                    <Link href="/login">
-                      Login
-                    </Link>
+                    <Link href="/login">Login</Link>
                   </Button>
                 )}
-                
               </div>
             </div>
           </motion.div>
@@ -160,16 +174,17 @@ const DesktopNav = ({
         ))}
       </div>
       <div className="flex items-center gap-2">
-        <ModeToggle /> 
-        {user ? (
-          <Button onClick={handleLogOut}>
-            Logout
+        <ModeToggle />
+        {user && (
+          <Button asChild variant={"outline"}>
+            <Link href="/dashboard">Dashboard</Link>
           </Button>
+        )}
+        {user ? (
+          <Button onClick={handleLogOut}>Logout</Button>
         ) : (
           <Button asChild>
-            <Link href="/login">
-              Login
-            </Link>
+            <Link href="/login">Login</Link>
           </Button>
         )}
       </div>
