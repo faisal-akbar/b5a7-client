@@ -46,7 +46,7 @@ export const SignIn = () => {
       } else {
         toast.error(res?.message);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
     }
   };

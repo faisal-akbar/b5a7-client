@@ -22,15 +22,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     {
       title: "Blogs Management",
       items: [
-        { title: "All Blogs", url: "/blogs" },
-        { title: "Add Blog", url: "/blogs/new-blog" },
+        { title: "All Blogs", url: "/dashboard/blogs" },
+        { title: "Add Blog", url: "/dashboard/blogs/add-blog" },
       ],
     },
     {
       title: "Projects Management",
       items: [
-        { title: "All Projects", url: "/projects" },
-        { title: "Add Project", url: "/projects/new-project" },
+        { title: "All Projects", url: "/dashboard/projects" },
+        { title: "Add Project", url: "/dashboard/projects/add-project" },
       ],
     },
   ];
