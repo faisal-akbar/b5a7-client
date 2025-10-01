@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "./services/AuthService";
 
+
 type Role = keyof typeof roleBasedPrivateRoutes;
 
 const authRoutes = ["/login", "/register"];
+
+const protectedRoutes = [
+  /^\/dashboard/,
+];
 
 const roleBasedPrivateRoutes = {
   user: [/^\/user/, /^\/create-shop/],
@@ -15,19 +20,30 @@ export const middleware = async (request: NextRequest) => {
 
   const userInfo = await getCurrentUser();
 
+  // Check if the route is protected (dashboard routes)
+  const isProtectedRoute = protectedRoutes.some((route) => pathname.match(route));
+
   if (!userInfo) {
     if (authRoutes.includes(pathname)) {
       return NextResponse.next();
-    } else {
+    } else if (isProtectedRoute) {
       return NextResponse.redirect(
         new URL(
           `http://localhost:3000/login?redirectPath=${pathname}`,
           request.url
         )
       );
+    } else {
+      return NextResponse.next();
     }
   }
 
+  // If user is authenticated and trying to access dashboard routes, allow it
+  if (isProtectedRoute) {
+    return NextResponse.next();
+  }
+
+  // Handle role-based routes
   if (userInfo?.role && roleBasedPrivateRoutes[userInfo?.role as Role]) {
     const routes = roleBasedPrivateRoutes[userInfo?.role as Role];
     if (routes.some((route) => pathname.match(route))) {
@@ -35,16 +51,13 @@ export const middleware = async (request: NextRequest) => {
     }
   }
 
-  return NextResponse.redirect(new URL("/", request.url));
+  return NextResponse.next();
 };
 
 export const config = {
   matcher: [
     "/login",
-    "/create-shop",
-    "/admin",
-    "/admin/:page",
-    "/user",
-    "/user/:page",
+    "/dashboard",
+    "/dashboard/:path*",
   ],
 };

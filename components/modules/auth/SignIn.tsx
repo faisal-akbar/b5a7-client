@@ -1,5 +1,20 @@
 "use client";
+import React from "react";
+
+
+import { Container } from "../Container";
+import { Heading } from "../Heading";
+import { AuthIllustration } from "./AuthIllustration";
+import { SubHeading } from "../SubHeading";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { FieldValues, useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "./LoginValidation";
+import { useUser } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
+import { loginUser } from "@/services/AuthService";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -8,32 +23,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { FieldValues, useForm, type SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
-import { loginSchema } from "./LoginValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useUser } from "@/context/UserContext";
-import { useRouter, useSearchParams } from "next/navigation";
-import { loginUser } from "@/services/AuthService";
 
 
-export function LoginForm({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-
-const form = useForm({
+export const SignIn = () => {
+  const form = useForm({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "super@next.com", password: "ph@123456" },
   });
 
   const { setIsLoading } = useUser();
 
-const searchParams = useSearchParams();
-const redirect = searchParams.get("redirectPath");
-const router = useRouter();
+  const router = useRouter();
 
 
 const {
@@ -46,11 +46,8 @@ const {
       setIsLoading(true);
       if (res?.success) {
         toast.success(res?.message);
-        if (redirect) {
-          router.push(redirect);
-        } else {
-          router.push("/");
-        }
+
+        router.push("/dashboard");
       } else {
         toast.error(res?.message);
       }
@@ -60,24 +57,28 @@ const {
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Login to your account</h1>
-        <p className="text-balance text-sm text-muted-foreground">
-          Enter your email below to login to your account
-        </p>
-      </div>
-      <div className="grid gap-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <Container className="min-h-[calc(100vh-8rem)] py-10 md:py-20">
+      <div className="grid grid-cols-1 gap-10 px-4 md:grid-cols-2 md:px-8 lg:gap-40">
+        <div>
+          <Heading className="mt-4 text-left lg:text-4xl">
+            Welcome back!
+          </Heading>
+          <SubHeading as="p" className="mt-4 max-w-xl text-left">
+            Enter your email and password to access your account.
+          </SubHeading>
+
+          <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-8">
             <FormField
               control={form.control}
               name="email"
+              
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
+                      className="mt-4 border-none focus:ring-gray-300"
                       placeholder="john@example.com"
                       {...field}
                       value={field.value || ""}
@@ -96,6 +97,7 @@ const {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
+                      className="mt-4 border-none focus:ring-gray-300"
                       type="password"
                       placeholder="********"
                       {...field}
@@ -112,7 +114,10 @@ const {
             </Button>
           </form>
         </Form>
+          
+        </div>
+        <AuthIllustration />
       </div>
-    </div>
+    </Container>
   );
-}
+};
