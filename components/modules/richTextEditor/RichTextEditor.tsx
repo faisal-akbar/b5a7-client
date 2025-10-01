@@ -53,6 +53,6 @@ const RichTextEditor = ({ ref }: RichTextEditorProps) => {
     };
   }
 
-  return <div ref={editorRef} className="h-[500px] border-1 rounded-b" />;
+  return <div ref={editorRef} className=" m-3" />;
 };
 export default RichTextEditor;

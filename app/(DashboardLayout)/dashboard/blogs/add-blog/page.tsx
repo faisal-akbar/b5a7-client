@@ -1,4 +1,4 @@
-import AddBlog from "@/components/modules/addBlog/AddBlog";
+import AddBlog from "@/components/modules/addBlog/AddBlogForm";
 
 export default function AddBlogPage() {
   return (
