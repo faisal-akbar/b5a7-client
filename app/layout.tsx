@@ -1,6 +1,7 @@
 import UserProvider from "@/context/UserContext";
 import { ThemeProvider } from "@/provider/theme-provider";
 import type { Metadata } from "next";
+import { ViewTransitions } from "next-view-transitions";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -27,20 +28,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+    <ViewTransitions>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <UserProvider>{children}</UserProvider>
-        </ThemeProvider>
-        <Toaster richColors />
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <UserProvider>{children}</UserProvider>
+          </ThemeProvider>
+          <Toaster richColors />
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,7 +50,10 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
-                {/* <AvatarImage src={user?.avatar} alt={user?.name} /> */}
+                <AvatarImage
+                  src={"/images/faisal-akbar.jpg"}
+                  alt={user?.name}
+                />
                 <AvatarFallback className="rounded-lg">
                   {user?.name ? getNameInitials(user?.name) : "FA"}
                 </AvatarFallback>
@@ -73,7 +76,17 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  {/* <AvatarImage src={user?.avatar} alt={user?.name} /> */}
+                  <AvatarImage
+                    src={"/images/faisal-akbar.jpg"}
+                    alt={user?.name}
+                  />
+                  {/* <Image
+                    className="h-10 w-10 rounded-full"
+                    src="/images/faisal-akbar.jpg"
+                    height="100"
+                    width="100"
+                    alt="Avatar"
+                  /> */}
                   <AvatarFallback className="rounded-lg">FA</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">

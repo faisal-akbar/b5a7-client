@@ -175,12 +175,10 @@ export default function AddBlogForm() {
             <div className="p-2 rounded-lg bg-primary/10">
               <Sparkles className="h-5 w-5 text-primary" />
             </div>
-            <CardTitle className="text-3xl font-bold">
-              Content Details
-            </CardTitle>
+            <CardTitle className="text-3xl font-bold">Blog Details</CardTitle>
           </div>
           <CardDescription className="text-base">
-            Enter the information for your new content piece
+            Enter the information for your new blog post
           </CardDescription>
         </CardHeader>
         <CardContent>

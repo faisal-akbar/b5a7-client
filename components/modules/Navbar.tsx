@@ -1,14 +1,16 @@
 "use client";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useState } from "react";
 import { Container } from "./Container";
 
 import { protectedRoutes } from "@/constants";
 import { useUser } from "@/context/UserContext";
 import { CloseIcon, HamburgerIcon } from "@/icons/general";
+import { cn } from "@/lib/utils";
 import { logout } from "@/services/AuthService";
 import { IUser } from "@/types";
 import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "../Logo";
 import { Button } from "../ui/button";
@@ -67,12 +69,21 @@ const MobileNav = ({
   handleLogOut: () => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
   return (
     <div className="relative flex items-center justify-between p-2 md:hidden">
-      <Logo />
+      <Link href="/">
+        <Image
+          className="h-10 w-10 rounded-full"
+          src="/images/faisal-akbar.jpg"
+          height="100"
+          width="100"
+          alt="Avatar"
+        />
+      </Link>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="shadow-aceternity flex size-6 flex-col items-center justify-center rounded-md"
+        className="shadow-sm hover:shadow-md transition-shadow flex size-6 flex-col items-center justify-center rounded-md"
         aria-label="Toggle menu"
       >
         <HamburgerIcon className="size-4 shrink-0 text-gray-600" />
@@ -159,19 +170,39 @@ const DesktopNav = ({
   user: IUser | null;
   handleLogOut: () => void;
 }) => {
+  const pathname = usePathname();
+
   return (
     <div className="hidden items-center justify-between px-4 py-4 md:flex">
-      <Logo />
+      {/* <Logo /> */}
+      <Link href="/">
+        <Image
+          className="h-10 w-10 rounded-full"
+          src="/images/faisal-akbar.jpg"
+          height="100"
+          width="100"
+          alt="Avatar"
+        />
+      </Link>
       <div className="flex items-center gap-10">
-        {items.map((item) => (
-          <Link
-            className="font-medium text-gray-600 transition duration-200 hover:text-neutral-900 dark:text-gray-300 dark:hover:text-neutral-300"
-            href={item.href}
-            key={item.title}
-          >
-            {item.title}
-          </Link>
-        ))}
+        {items.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              className={cn(
+                "font-medium transition duration-200 px-3 py-2 rounded-md",
+                "text-gray-600 hover:text-neutral-900 hover:bg-gray-100",
+                "dark:text-gray-300 dark:hover:text-neutral-300 dark:hover:bg-neutral-800",
+                isActive &&
+                  "bg-gray-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-300"
+              )}
+              href={item.href}
+              key={item.title}
+            >
+              {item.title}
+            </Link>
+          );
+        })}
       </div>
       <div className="flex items-center gap-2">
         <ModeToggle />
