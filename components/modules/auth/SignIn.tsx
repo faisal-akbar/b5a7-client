@@ -1,20 +1,5 @@
 "use client";
-import React from "react";
-
-
-import { Container } from "../Container";
-import { Heading } from "../Heading";
-import { AuthIllustration } from "./AuthIllustration";
-import { SubHeading } from "../SubHeading";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { FieldValues, useForm, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "./LoginValidation";
-import { useUser } from "@/context/UserContext";
-import { useRouter } from "next/navigation";
-import { loginUser } from "@/services/AuthService";
-import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -23,7 +8,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
+import { Input } from "@/components/ui/input";
+import { useUser } from "@/context/UserContext";
+import { loginUser } from "@/services/AuthService";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { FieldValues, useForm, type SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
+import { Container } from "../Container";
+import { Heading } from "../Heading";
+import { SubHeading } from "../SubHeading";
+import { AuthIllustration } from "./AuthIllustration";
+import { loginSchema } from "./LoginValidation";
 
 export const SignIn = () => {
   const form = useForm({
@@ -35,8 +31,7 @@ export const SignIn = () => {
 
   const router = useRouter();
 
-
-const {
+  const {
     formState: { isSubmitting },
   } = form;
 
@@ -68,53 +63,54 @@ const {
           </SubHeading>
 
           <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-8">
-            <FormField
-              control={form.control}
-              name="email"
-              
-              render={({ field }) => (
-                <FormItem >
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="mt-4 border-none focus:ring-gray-300"
-                      placeholder="john@example.com"
-                      {...field}
-                      value={field.value || ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="mt-6 flex flex-col gap-8"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="mt-4 border-none focus:ring-gray-300"
+                        placeholder="john@example.com"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="mt-4 border-none focus:ring-gray-300"
-                      type="password"
-                      placeholder="********"
-                      {...field}
-                      value={field.value || ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="mt-4 border-none focus:ring-gray-300"
+                        type="password"
+                        placeholder="********"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Logging..." : "Login"}
-            </Button>
-          </form>
-        </Form>
-          
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? "Logging..." : "Login"}
+              </Button>
+            </form>
+          </Form>
         </div>
         <AuthIllustration />
       </div>

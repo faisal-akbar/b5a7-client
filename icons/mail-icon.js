@@ -1,0 +1,44 @@
+export default function MailIcon({ className }) {
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className={`${className}`}
+        >
+            <path
+                d="M2.75 7.75a3 3 0 0 1 3-3h12.5a3 3 0 0 1 3 3v8.5a3 3 0 0 1-3 3H5.75a3 3 0 0 1-3-3v-8.5Z"
+                className="fill-zinc-100 stroke-zinc-400 dark:fill-zinc-100/10 dark:stroke-zinc-500"
+            />
+            <path
+                d="m4 6 6.024 5.479a2.915 2.915 0 0 0 3.952 0L20 6"
+                className="stroke-zinc-400 dark:stroke-zinc-500"
+            />
+        </svg>
+    );
+}
+
+// function MailIcon({ className }) {
+//     return (
+//         <svg
+//             aria-hidden="true"
+//             viewBox="0 0 24 24"
+//             height="16"
+//             width="16"
+//             xmlns="http://www.w3.org/2000/svg"
+//             fillRule="evenodd"
+//             clipRule="evenodd"
+//             strokeLinejoin="round"
+//             strokeMiterlimit="1.414"
+//             className={`${className}`}
+//         >
+//             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+//             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+//         </svg>
+//     );
+// }
+
+// export default MailIcon;
