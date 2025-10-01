@@ -23,14 +23,39 @@ const RichTextEditor = ({ ref }: RichTextEditorProps) => {
         theme: "snow",
         modules: {
           toolbar: [
-            [{ header: [1, 2, 3, false] }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
             ["bold", "italic", "underline", "strike"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            ["link", "image"],
+            [{ color: [] }, { background: [] }],
+            [{ align: [] }],
+            [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+            ["link", "image", "video"],
+            ["blockquote", "code-block"],
+            [{ script: "sub" }, { script: "super" }],
             ["clean"],
           ],
+          clipboard: {
+            matchVisual: false,
+          },
         },
-        placeholder: "Write something...",
+        placeholder: "Start writing your content here...",
+        formats: [
+          "header",
+          "bold",
+          "italic",
+          "underline",
+          "strike",
+          "color",
+          "background",
+          "align",
+          "list",
+          "bullet",
+          "link",
+          "image",
+          "video",
+          "blockquote",
+          "code-block",
+          "script",
+        ],
       });
     }
 
@@ -53,6 +78,17 @@ const RichTextEditor = ({ ref }: RichTextEditorProps) => {
     };
   }
 
-  return <div ref={editorRef} className=" m-3" />;
+  return (
+    <div
+      ref={editorRef}
+      className="quill-editor-wrapper"
+      style={{
+        border: "1px solid var(--border)",
+        borderRadius: "8px",
+        overflow: "hidden",
+        backgroundColor: "var(--background)",
+      }}
+    />
+  );
 };
 export default RichTextEditor;

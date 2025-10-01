@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { createBlog } from "@/services/Blog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, Sparkles, X } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -52,14 +53,16 @@ const formSchema = z.object({
     .string()
     .min(1, "Title is required")
     .max(200, "Title must be less than 200 characters"),
-  excerpts: z
+  excerpt: z
     .string()
     .min(1, "Excerpt is required")
     .max(500, "Excerpt must be less than 500 characters"),
   tags: z.array(z.string()),
   isFeatured: z.boolean(),
   isPublished: z.boolean(),
-  thumbnail: z.any().nullable(),
+  thumbnail: z.any().refine((file) => file !== null && file !== undefined, {
+    message: "Thumbnail is required",
+  }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -68,38 +71,65 @@ export default function AddBlogForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      excerpts: "",
+      excerpt: "",
       tags: [],
       isFeatured: false,
       isPublished: false,
-      thumbnail: null,
+      thumbnail: undefined,
     },
   });
 
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   //   const [addDivision] = useAddDivisionMutation();
 
   console.log("Inside add division modal", image);
 
-  const onSubmit = async (data) => {
-    const formData = new FormData();
+  const onSubmit = async (data: FormData) => {
+    // Get content from the rich text editor
+    const editorContent = editorRef.current?.getContent() || "";
 
-    formData.append("data", JSON.stringify(data));
+    console.log("Editor content:", editorContent);
+
+    // Check if content is empty (strip HTML tags and check for actual text)
+    const textContent = editorContent.replace(/<[^>]*>/g, "").trim();
+
+    if (textContent.length === 0) {
+      toast.error("Please add some content before saving");
+      return;
+    }
+
+    // Check if thumbnail is selected
+    if (!image) {
+      toast.error("Please select a thumbnail image");
+      return;
+    }
+
+    // Update the form data with the editor content
+    const formDataWithContent = {
+      ...data,
+      content: editorContent,
+    };
+
+    console.log("Form data with content:", formDataWithContent);
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(formDataWithContent));
     formData.append("file", image as File);
 
-    // console.log(formData.get("data"));
-    // console.log(formData.get("file"));
-
     try {
-      //   const res = await addDivision(formData).unwrap();
-      toast.success("Blog added successfully!");
-      setOpen(false);
+      const res = await createBlog(formData);
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
     } catch (err) {
       console.error(err);
+      toast.error("Failed to save blog. Please try again.");
     }
   };
 
@@ -127,15 +157,15 @@ export default function AddBlogForm() {
 
   // For Quill Text Editor
   const editorRef = useRef<RichTextEditorHandle>(null); // Ref for RichTextEditor
-  const [, setEditorContent] = useState<string>(""); // State to store the editor content
+  // const [, setEditorContent] = useState<string>(""); // State to store the editor content
 
-  const handleGetContent = () => {
-    if (editorRef.current) {
-      const content = editorRef.current.getContent(); // Get the editor content
-      console.log(content);
-      setEditorContent(content); // Update the state with the content
-    }
-  };
+  // const handleGetContent = () => {
+  //   if (editorRef.current) {
+  //     const content = editorRef.current.getContent(); // Get the editor content
+  //     console.log(content);
+  //     setEditorContent(content); // Update the state with the content
+  //   }
+  // };
 
   return (
     <>
@@ -176,7 +206,7 @@ export default function AddBlogForm() {
 
               <FormField
                 control={form.control}
-                name="excerpts"
+                name="excerpt"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm font-semibold">
@@ -247,10 +277,27 @@ export default function AddBlogForm() {
               />
 
               <div className="grid md:grid-cols-2 gap-6">
-                <SingleImageUploader onChange={setImage} />
+                <FormField
+                  control={form.control}
+                  name="thumbnail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-semibold">
+                        Thumbnail <span className="text-destructive">*</span>
+                      </FormLabel>
+                      <SingleImageUploader
+                        onChange={(file) => {
+                          setImage(file);
+                          field.onChange(file);
+                        }}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 {/* </div> */}
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 md:mt-7">
                   <FormField
                     control={form.control}
                     name="isFeatured"
@@ -305,7 +352,7 @@ export default function AddBlogForm() {
                 <FormLabel className="text-sm font-semibold">
                   Content <span className="text-destructive">*</span>
                 </FormLabel>
-                <div className="min-h-[500px] h-[500px] border-b-2 overflow-hidden">
+                <div className="min-h-[500px] h-[500px] border-b-1 overflow-hidden">
                   <RichTextEditor ref={editorRef} />
                 </div>
               </div>

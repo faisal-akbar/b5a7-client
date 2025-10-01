@@ -120,3 +120,261 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Quill Editor Custom Styles */
+.ql-editor {
+  font-family: var(--font-geist-sans), system-ui, sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: var(--foreground) !important;
+  background: var(--background) !important;
+  min-height: 400px !important;
+  padding: 20px !important;
+}
+
+.ql-toolbar {
+  border: 1px solid var(--border) !important;
+  border-bottom: none !important;
+  border-radius: 8px 8px 0 0 !important;
+  background: var(--card) !important;
+  padding: 12px !important;
+}
+
+.ql-container {
+  border: 1px solid var(--border) !important;
+  border-radius: 0 0 8px 8px !important;
+  background: var(--background) !important;
+  font-family: var(--font-geist-sans), system-ui, sans-serif !important;
+}
+
+.ql-toolbar .ql-stroke {
+  stroke: var(--foreground) !important;
+}
+
+.ql-toolbar .ql-fill {
+  fill: var(--foreground) !important;
+}
+
+.ql-toolbar button {
+  color: var(--foreground) !important;
+  border-radius: 4px !important;
+  margin: 2px !important;
+  transition: all 0.2s ease !important;
+}
+
+.ql-toolbar button:hover {
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+.ql-toolbar button.ql-active {
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+}
+
+.ql-toolbar .ql-picker {
+  color: var(--foreground) !important;
+}
+
+.ql-toolbar .ql-picker-options {
+  background: var(--popover) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+}
+
+.ql-toolbar .ql-picker-item {
+  color: var(--popover-foreground) !important;
+}
+
+.ql-toolbar .ql-picker-item:hover {
+  background: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+/* Custom scrollbar for editor */
+.ql-editor::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ql-editor::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+.ql-editor::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 4px;
+}
+
+.ql-editor::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+}
+
+/* Focus styles */
+.ql-container.ql-snow {
+  border-color: var(--border) !important;
+}
+
+.ql-container.ql-snow:focus-within {
+  border-color: var(--ring) !important;
+  box-shadow: 0 0 0 2px var(--ring) !important;
+}
+
+/* Placeholder styling */
+.ql-editor.ql-blank::before {
+  color: var(--muted-foreground) !important;
+  font-style: normal !important;
+  font-size: 16px !important;
+}
+
+/* Dark mode specific adjustments */
+.dark .ql-toolbar {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+.dark .ql-container {
+  background: var(--background) !important;
+  border-color: var(--border) !important;
+}
+
+.dark .ql-editor {
+  color: var(--foreground) !important;
+  background: var(--background) !important;
+}
+
+/* Custom button styles */
+.ql-toolbar .ql-bold,
+.ql-toolbar .ql-italic,
+.ql-toolbar .ql-underline,
+.ql-toolbar .ql-strike {
+  font-weight: 600 !important;
+}
+
+/* Link styling */
+.ql-editor a {
+  color: var(--primary) !important;
+  text-decoration: underline !important;
+}
+
+.ql-editor a:hover {
+  color: var(--primary) !important;
+  opacity: 0.8 !important;
+}
+
+/* Blockquote styling */
+.ql-editor blockquote {
+  border-left: 4px solid var(--primary) !important;
+  padding-left: 16px !important;
+  margin: 16px 0 !important;
+  font-style: italic !important;
+  color: var(--muted-foreground) !important;
+}
+
+/* Code block styling */
+.ql-editor pre {
+  background: var(--muted) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  padding: 12px !important;
+  font-family: var(--font-geist-mono), monospace !important;
+  font-size: 14px !important;
+  overflow-x: auto !important;
+}
+
+/* List styling */
+.ql-editor ul,
+.ql-editor ol {
+  padding-left: 24px !important;
+}
+
+.ql-editor li {
+  margin: 4px 0 !important;
+}
+
+/* Header styling */
+.ql-editor h1 {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  margin: 24px 0 16px 0 !important;
+  color: var(--foreground) !important;
+}
+
+.ql-editor h2 {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  margin: 20px 0 12px 0 !important;
+  color: var(--foreground) !important;
+}
+
+.ql-editor h3 {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  margin: 16px 0 8px 0 !important;
+  color: var(--foreground) !important;
+}
+
+/* Quill Editor Wrapper */
+.quill-editor-wrapper {
+  border: 1px solid var(--border) !important;
+  /* border-radius: 8px !important; */
+  overflow: hidden !important;
+  background: var(--background) !important;
+  transition: all 0.2s ease !important;
+}
+
+.quill-editor-wrapper:focus-within {
+  border-color: var(--ring) !important;
+  box-shadow: 0 0 0 2px var(--ring) !important;
+}
+
+/* Remove default Quill borders since we're handling them in wrapper */
+.quill-editor-wrapper .ql-toolbar {
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+}
+
+.quill-editor-wrapper .ql-container {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Image styling in editor */
+.ql-editor img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 4px !important;
+  margin: 8px 0 !important;
+}
+
+/* Table styling */
+.ql-editor table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  margin: 16px 0 !important;
+}
+
+.ql-editor table td,
+.ql-editor table th {
+  border: 1px solid var(--border) !important;
+  padding: 8px 12px !important;
+  text-align: left !important;
+}
+
+.ql-editor table th {
+  background: var(--muted) !important;
+  font-weight: 600 !important;
+}
+
+/* Custom selection styling */
+.ql-editor::selection {
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+}
+
+.ql-editor ::-moz-selection {
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+}
