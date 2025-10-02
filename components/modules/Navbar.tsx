@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { logout } from "@/services/AuthService";
 import { IUser } from "@/types";
 import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "../Logo";
 import { Button } from "../ui/button";
@@ -73,13 +72,7 @@ const MobileNav = ({
   return (
     <div className="relative flex items-center justify-between p-2 md:hidden">
       <Link href="/">
-        <Image
-          className="h-10 w-10 rounded-full"
-          src="/images/faisal-akbar.jpg"
-          height="100"
-          width="100"
-          alt="Avatar"
-        />
+        <Logo />
       </Link>
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -174,15 +167,8 @@ const DesktopNav = ({
 
   return (
     <div className="hidden items-center justify-between px-4 py-4 md:flex">
-      {/* <Logo /> */}
       <Link href="/">
-        <Image
-          className="h-10 w-10 rounded-full"
-          src="/images/faisal-akbar.jpg"
-          height="100"
-          width="100"
-          alt="Avatar"
-        />
+        <Logo />
       </Link>
       <div className="flex items-center gap-10">
         {items.map((item) => {
