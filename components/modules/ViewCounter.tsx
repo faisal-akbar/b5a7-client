@@ -1,28 +1,28 @@
 // app/posts/[slug]/ViewCounter.tsx
 "use client";
-import { useEffect } from "react";
+import { Eye } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function ViewCounter({ slug }: { slug: string }) {
+  const [views, setViews] = useState<number>(0);
   useEffect(() => {
-    // Make a POST request to your API route
-    const incrementView = async () => {
+    const getViews = async () => {
       try {
-        await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_API}/blog/increment-views`,
-          {
-            method: "POST",
-            body: JSON.stringify({ slug }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_API}/blog/views/${slug}`
         );
+        const { data } = await res.json();
+        setViews(data.views);
       } catch (error) {
-        console.error("Failed to increment view count", error);
+        console.error("Failed to get view count", error);
       }
     };
-    incrementView();
+    getViews();
   }, [slug]);
-
-  return null;
+  return (
+    <span className="flex items-center gap-1.5">
+      <Eye className="h-5 w-5" />
+      <span className="ml-0">{views ? views.toLocaleString() : "–––"}</span>
+    </span>
+  );
 }

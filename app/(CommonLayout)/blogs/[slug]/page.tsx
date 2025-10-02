@@ -3,9 +3,10 @@ import { TableOfContents } from "@/components/modules/TableOfContents";
 import ViewCounter from "@/components/modules/ViewCounter";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
-import { CalendarDays, Clock, Edit3, Eye } from "lucide-react";
+import { CalendarDays, Clock, Edit3 } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 interface BlogPost {
   id: number;
@@ -39,6 +40,29 @@ function calculateReadingTime(content: string): number {
   return Math.ceil(wordCount / wordsPerMinute);
 }
 
+// Generate static params for ISR
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {
+      next: {
+        tags: ["blogs", "blog_post"], // Include both tags for proper revalidation
+      },
+    });
+
+    if (!res.ok) {
+      return [];
+    }
+
+    const { data: blogs } = await res.json();
+    return blogs.map((blog: BlogPost) => ({
+      slug: blog.slug,
+    }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
+}
+
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   try {
     const { slug } = await params;
@@ -46,7 +70,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       `${process.env.NEXT_PUBLIC_BASE_API}/blog/${slug}`,
       {
         next: {
-          tags: ["BLOG_POST"],
+          tags: ["blog_post", "blogs", "home"], // Include all relevant tags
         },
       }
     );
@@ -85,10 +109,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     <Clock className="h-5 w-5" />
                     {readingTime} min read
                   </span>
-                  <span className="flex items-center gap-1.5">
-                    <Eye className="h-5 w-5" />
-                    <span className="ml-0">{blog.views} views</span>
-                  </span>
+                  <Suspense fallback={<div>Loading views...</div>}>
+                    <ViewCounter slug={blog.slug} />
+                  </Suspense>
                 </div>
 
                 {/* Title */}
@@ -147,7 +170,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </div>
         </article>
-        <ViewCounter slug={blog.slug} />
       </Container>
     );
   } catch (error) {
