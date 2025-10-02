@@ -1,18 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "./services/AuthService";
 
-
 type Role = keyof typeof roleBasedPrivateRoutes;
 
-const authRoutes = ["/login", "/register"];
+const authRoutes = ["/login"];
 
-const protectedRoutes = [
-  /^\/dashboard/,
-];
+const protectedRoutes = [/^\/dashboard/];
 
 const roleBasedPrivateRoutes = {
-  user: [/^\/user/, /^\/create-shop/],
-  admin: [/^\/admin/],
+  SUPER_ADMIN: [/^\/SUPER_ADMIN/],
+  ADMIN: [/^\/ADMIN/],
 };
 
 export const middleware = async (request: NextRequest) => {
@@ -21,7 +18,9 @@ export const middleware = async (request: NextRequest) => {
   const userInfo = await getCurrentUser();
 
   // Check if the route is protected (dashboard routes)
-  const isProtectedRoute = protectedRoutes.some((route) => pathname.match(route));
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.match(route)
+  );
 
   if (!userInfo) {
     if (authRoutes.includes(pathname)) {
@@ -55,9 +54,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: [
-    "/login",
-    "/dashboard",
-    "/dashboard/:path*",
-  ],
+  matcher: ["/login", "/dashboard", "/dashboard/:path*"],
 };
