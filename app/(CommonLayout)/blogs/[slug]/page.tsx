@@ -36,11 +36,14 @@ interface BlogPostPageProps {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {
-      next: {
-        tags: ["blogs", "blog_post"], // Include both tags for proper revalidation
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/blog?isPublished=true`,
+      {
+        next: {
+          tags: ["blogs", "blog_post"], // Include both tags for proper revalidation
+        },
+      }
+    );
 
     if (!res.ok) {
       return [];

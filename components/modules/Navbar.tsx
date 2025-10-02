@@ -133,7 +133,7 @@ const MobileNav = ({
               <div className="mt-4 p-4 space-y-3">
                 {user && (
                   <Button asChild className="w-full" variant={"outline"}>
-                    <Link href="/dashboard">Dashboard</Link>
+                    <Link href="/dashboard/blogs">Dashboard</Link>
                   </Button>
                 )}
                 {user ? (
@@ -194,7 +194,7 @@ const DesktopNav = ({
         <ModeToggle />
         {user && (
           <Button asChild variant={"outline"}>
-            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/dashboard/blogs">Dashboard</Link>
           </Button>
         )}
         {user ? (

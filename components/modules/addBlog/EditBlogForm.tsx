@@ -23,6 +23,7 @@ import { updateBlog } from "@/services/Blog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, Sparkles, X } from "lucide-react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -52,14 +53,16 @@ const formSchema = z.object({
   title: z
     .string()
     .min(1, "Title is required")
-    .max(200, "Title must be less than 200 characters"),
+    .max(200, "Title must be less than 200 characters")
+    .optional(),
   excerpt: z
     .string()
     .min(1, "Excerpt is required")
-    .max(500, "Excerpt must be less than 500 characters"),
-  tags: z.array(z.string()),
-  isFeatured: z.boolean(),
-  isPublished: z.boolean(),
+    .max(500, "Excerpt must be less than 500 characters")
+    .optional(),
+  tags: z.array(z.string()).optional(),
+  isFeatured: z.boolean().optional(),
+  isPublished: z.boolean().optional(),
   thumbnail: z.any().optional(),
 });
 
@@ -89,7 +92,7 @@ export default function EditBlogForm({ blog }: { blog: Blog }) {
       thumbnail: undefined,
     },
   });
-
+  const router = useRouter();
   const [tags, setTags] = useState<string[]>(blog?.tags ?? []);
   const [tagInput, setTagInput] = useState("");
   const [image, setImage] = useState<File | null>(null);
@@ -123,6 +126,7 @@ export default function EditBlogForm({ blog }: { blog: Blog }) {
       const res = await updateBlog(blog.id, payload);
       if (res.success) {
         toast.success(res.message);
+        router.push(`/dashboard/blogs`);
       } else {
         toast.error(res.message);
       }
@@ -271,6 +275,7 @@ export default function EditBlogForm({ blog }: { blog: Blog }) {
                         Thumbnail
                       </FormLabel>
                       <SingleImageUploader
+                        initialUrl={blog?.thumbnail}
                         onChange={(file) => {
                           setImage(file);
                           field.onChange(file);
@@ -346,22 +351,25 @@ export default function EditBlogForm({ blog }: { blog: Blog }) {
                   />
                 </div>
               </div>
-              <div className="pt-3 gap-3 flex">
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 h-12"
-                >
-                  Save Changes
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  className="px-8 h-12 bg-transparent"
-                >
-                  Cancel
-                </Button>
+              <div className="flex justify-end">
+                <div className="pt-3 gap-3 flex">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 h-12"
+                  >
+                    Save Changes
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    className="px-8 h-12 bg-transparent"
+                    onClick={() => router.push("/dashboard/blogs")}
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </div>
             </form>
           </Form>

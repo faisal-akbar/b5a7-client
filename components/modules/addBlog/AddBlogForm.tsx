@@ -23,6 +23,7 @@ import { createBlog } from "@/services/Blog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, Sparkles, X } from "lucide-react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -43,7 +44,6 @@ const RichTextEditor = dynamic(
   }
 );
 
-// Define the RichTextEditorHandle type
 type RichTextEditorHandle = {
   getContent: () => string;
 };
@@ -78,21 +78,15 @@ export default function AddBlogForm() {
       thumbnail: undefined,
     },
   });
-
+  const router = useRouter();
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
 
-  // const [open, setOpen] = useState(false);
   const [image, setImage] = useState<File | null>(null);
-  //   const [addDivision] = useAddDivisionMutation();
-
-  console.log("Inside add division modal", image);
 
   const onSubmit = async (data: FormData) => {
     // Get content from the rich text editor
     const editorContent = editorRef.current?.getContent() || "";
-
-    console.log("Editor content:", editorContent);
 
     // Check if content is empty (strip HTML tags and check for actual text)
     const textContent = editorContent.replace(/<[^>]*>/g, "").trim();
@@ -114,8 +108,6 @@ export default function AddBlogForm() {
       content: editorContent,
     };
 
-    console.log("Form data with content:", formDataWithContent);
-
     const formData = new FormData();
     formData.append("data", JSON.stringify(formDataWithContent));
     formData.append("file", image as File);
@@ -124,6 +116,7 @@ export default function AddBlogForm() {
       const res = await createBlog(formData);
       if (res.success) {
         toast.success(res.message);
+        router.push("/dashboard/blogs");
       } else {
         toast.error(res.message);
       }
@@ -354,24 +347,25 @@ export default function AddBlogForm() {
                   <RichTextEditor ref={editorRef} />
                 </div>
               </div>
-              <div className="pt-3 gap-3 flex">
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 h-12"
-                >
-                  {form.watch("isPublished")
-                    ? "Publish Content"
-                    : "Save as Draft"}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  className="px-8 h-12 bg-transparent"
-                >
-                  Cancel
-                </Button>
+              <div className="flex justify-end">
+                <div className="pt-3 gap-3 flex">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 h-12"
+                  >
+                    Save Changes
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="lg"
+                    className="px-8 h-12 bg-transparent"
+                    onClick={() => router.push("/dashboard/blogs")}
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </div>
             </form>
           </Form>

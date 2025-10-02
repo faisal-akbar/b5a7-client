@@ -42,7 +42,7 @@ export const SignIn = () => {
       if (res?.success) {
         toast.success(res?.message);
 
-        router.push("/dashboard");
+        router.push("/dashboard/blogs");
       } else {
         toast.error(res?.message);
       }

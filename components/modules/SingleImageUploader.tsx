@@ -1,12 +1,14 @@
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react";
 
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function SingleImageUploader({
   onChange,
+  initialUrl,
 }: {
   onChange: (file: File | null) => void;
+  initialUrl?: string;
 }) {
   const maxSizeMB = 5;
   const maxSize = maxSizeMB * 1024 * 1024; // 5MB default
@@ -29,6 +31,10 @@ export default function SingleImageUploader({
 
   console.log("Inside image uploader", files);
 
+  const [showInitialPreview, setShowInitialPreview] = useState<boolean>(
+    Boolean(initialUrl)
+  );
+
   useEffect(() => {
     if (files.length > 0) {
       const file = files[0]?.file;
@@ -37,12 +43,22 @@ export default function SingleImageUploader({
       } else {
         onChange(null);
       }
-    } else {
+    } else if (!showInitialPreview) {
       onChange(null);
     }
-  }, [files, onChange]);
+  }, [files, onChange, showInitialPreview]);
 
-  const previewUrl = files[0]?.preview || null;
+  useEffect(() => {
+    if (files.length === 0) {
+      setShowInitialPreview(Boolean(initialUrl));
+    }
+  }, [initialUrl, files.length]);
+
+  const previewUrl = useMemo(() => {
+    return (
+      files[0]?.preview || (showInitialPreview ? initialUrl || null : null)
+    );
+  }, [files, showInitialPreview, initialUrl]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -93,7 +109,15 @@ export default function SingleImageUploader({
             <button
               type="button"
               className="focus-visible:border-ring focus-visible:ring-ring/50 z-50 flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white transition-[color,box-shadow] outline-none hover:bg-black/80 focus-visible:ring-[3px]"
-              onClick={() => removeFile(files[0]?.id)}
+              onClick={() => {
+                if (files.length > 0 && files[0]?.id) {
+                  removeFile(files[0]?.id);
+                } else {
+                  // clearing initial preview
+                  setShowInitialPreview(false);
+                  onChange(null);
+                }
+              }}
               aria-label="Remove image"
             >
               <XIcon className="size-4" aria-hidden="true" />

@@ -214,13 +214,15 @@ export const DashboardBlogCard = ({
           <div className="w-full flex items-center justify-between text-xs text-muted-foreground">
             <span className="capitalize">
               {blog.isFeatured && <Badge variant="default">Featured</Badge>}
-            </span>
-            <Link
-              href={`/blogs/${blog.slug}`}
-              className="text-primary font-medium"
-            >
-              View public →
-            </Link>
+            </span>{" "}
+            {blog.isPublished && (
+              <Link
+                href={`/blogs/${blog.slug}`}
+                className="text-primary font-medium"
+              >
+                View public →
+              </Link>
+            )}
           </div>
         </CardFooter>
       </Card>
