@@ -33,6 +33,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         { title: "Add Project", url: "/dashboard/projects/add-project" },
       ],
     },
+    {
+      title: "About Me",
+      items: [{ title: "About", url: "/dashboard/about" }],
+    },
   ];
 
   return (

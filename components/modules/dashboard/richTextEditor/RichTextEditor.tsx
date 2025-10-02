@@ -50,10 +50,8 @@ const RichTextEditor = ({ ref, initialHtml }: RichTextEditorProps) => {
           "background",
           "align",
           "list",
-          "bullet",
           "link",
           "image",
-          "video",
           "blockquote",
           "code-block",
           "script",
@@ -69,6 +67,7 @@ const RichTextEditor = ({ ref, initialHtml }: RichTextEditorProps) => {
         quillRef.current = null; // Cleanup to avoid memory leaks
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update content when initialHtml changes after mount

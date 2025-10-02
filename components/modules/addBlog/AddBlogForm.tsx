@@ -343,7 +343,7 @@ export default function AddBlogForm() {
                 <FormLabel className="text-sm font-semibold">
                   Content <span className="text-destructive">*</span>
                 </FormLabel>
-                <div className="min-h-[500px] h-[500px] border-b-1 overflow-hidden">
+                <div className="min-h-[500px] h-[500px] border-b-1 overflow-auto">
                   <RichTextEditor ref={editorRef} />
                 </div>
               </div>
