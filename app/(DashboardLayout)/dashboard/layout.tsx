@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/modules/AppSidebar";
+import { AppSidebar } from "@/components/modules/dashboard/AppSidebar";
 import { ModeToggle } from "@/components/modules/ModeToggle";
 import { Separator } from "@/components/ui/separator";
 import {

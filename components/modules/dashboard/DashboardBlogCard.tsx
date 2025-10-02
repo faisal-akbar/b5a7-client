@@ -11,12 +11,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { deleteBlog } from "@/services/Blog";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarDays, Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
+import DeleteConfirmation from "./DeleteConfirmation";
 
 interface BlogData {
   id: number;
@@ -53,15 +56,14 @@ export const DashboardBlogCard = ({
   const router = useRouter();
 
   const handleDelete = () => {
-    if (!confirm("Delete this blog? This action cannot be undone.")) return;
     startTransition(async () => {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${blog.id}`, {
-          method: "DELETE",
-        });
+        await deleteBlog(blog.id);
+        toast.success("Blog deleted successfully");
         router.refresh();
       } catch (error) {
         console.error(error);
+        toast.error("Failed to delete blog");
       }
     });
   };
@@ -138,7 +140,7 @@ export const DashboardBlogCard = ({
                 <Edit className="h-4 w-4" />
               </Button>
             </Link>
-            <Button
+            {/* <Button
               size="icon"
               variant="destructive"
               className="h-8 w-8"
@@ -146,7 +148,21 @@ export const DashboardBlogCard = ({
               disabled={isPending}
             >
               <Trash2 className="h-4 w-4" />
-            </Button>
+            </Button> */}
+
+            <DeleteConfirmation
+              trigger={
+                <Button size="icon" variant="destructive" className="h-8 w-8">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              }
+              title="Are you absolutely sure?"
+              description={`This action cannot be undone. This will permanently delete the parcel`}
+              onConfirm={() => {
+                handleDelete();
+              }}
+              isLoading={isPending}
+            />
           </div>
         </div>
 

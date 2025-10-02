@@ -1,4 +1,4 @@
-import { DashboardBlogCardGrid } from "@/components/modules/DashboardBlogCardGrid";
+import { DashboardBlogCardGrid } from "@/components/modules/dashboard/DashboardBlogCardGrid";
 
 async function page() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {

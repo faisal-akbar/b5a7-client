@@ -28,10 +28,10 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-import SingleImageUploader from "../SingleImageUploader";
+import SingleImageUploader from "../dashboard/SingleImageUploader";
 
 const RichTextEditor = dynamic(
-  () => import("@/components/modules/richTextEditor/RichTextEditor"),
+  () => import("@/components/modules/dashboard/richTextEditor/RichTextEditor"),
   {
     ssr: false,
     loading: () => (

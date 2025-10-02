@@ -76,3 +76,23 @@ export const updateBlog = async (
     throw new Error("Failed to update blog");
   }
 };
+
+export const deleteBlog = async (id: string | number): Promise<any> => {
+  const token = await getValidToken();
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: token,
+      },
+    });
+    revalidateTag("blogs");
+    return res.json();
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message || "Failed to delete blog");
+    }
+    throw new Error("Failed to delete blog");
+  }
+};

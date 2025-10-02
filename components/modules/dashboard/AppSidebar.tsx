@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/sidebar";
 
 import Link from "next/link";
-import Logo from "../Logo";
-import { NavUser } from "../ui/nav-user";
+import Logo from "../../Logo";
+import { NavUser } from "../../ui/nav-user";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navItems = [
