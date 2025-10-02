@@ -9,13 +9,16 @@ import { Link } from "next-view-transitions";
 import Image from "next/image";
 
 export default async function HomePage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {
-    next: {
-      tags: ["BLOGS"],
-    },
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/blog?isFeatured=true&isPublished=true`,
+    {
+      next: {
+        tags: ["blogs", "blog_post"],
+      },
+    }
+  );
   const { data: blogs } = await res.json();
-  console.log(blogs);
+
   return (
     <Container className="mt-10 px-3">
       <div className="space-y-11">
@@ -37,7 +40,7 @@ export default async function HomePage() {
                 Code. Problem-Solving. Building.
               </h1> */}
               <div className="flex flex-col sm:flex-row sm:items-center">
-                <Heading className="font-bold tracking-tight text-zinc-800 text-4xl  dark:text-zinc-100 sm:text-5xl mr-3">
+                <Heading className="text-left font-bold tracking-tight text-zinc-800 text-4xl  dark:text-zinc-100 sm:text-5xl mr-3">
                   Faisal Akbar
                 </Heading>
                 <Flipper />
@@ -98,7 +101,8 @@ function SocialLink({
   href,
   ...props
 }: {
-  icon: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  icon: React.ComponentType<any>;
   href: string;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   return (

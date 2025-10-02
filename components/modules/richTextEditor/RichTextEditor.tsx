@@ -7,13 +7,15 @@ import { useEffect, useRef } from "react";
 // Define the ref type for the RichTextEditor component
 export type RichTextEditorHandle = {
   getContent: () => string;
+  setContent: (html: string) => void;
 };
 
 interface RichTextEditorProps {
   ref?: React.Ref<RichTextEditorHandle>;
+  initialHtml?: string;
 }
 
-const RichTextEditor = ({ ref }: RichTextEditorProps) => {
+const RichTextEditor = ({ ref, initialHtml }: RichTextEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<Quill | null>(null);
 
@@ -57,6 +59,9 @@ const RichTextEditor = ({ ref }: RichTextEditorProps) => {
           "script",
         ],
       });
+      if (initialHtml) {
+        quillRef.current.root.innerHTML = initialHtml;
+      }
     }
 
     return () => {
@@ -66,6 +71,13 @@ const RichTextEditor = ({ ref }: RichTextEditorProps) => {
     };
   }, []);
 
+  // Update content when initialHtml changes after mount
+  useEffect(() => {
+    if (quillRef.current && typeof initialHtml === "string") {
+      quillRef.current.root.innerHTML = initialHtml;
+    }
+  }, [initialHtml]);
+
   // Expose the getContent function to the parent component using React 19 ref handling
   if (ref && typeof ref === "object" && "current" in ref) {
     ref.current = {
@@ -74,6 +86,11 @@ const RichTextEditor = ({ ref }: RichTextEditorProps) => {
           return quillRef.current.root.innerHTML; // Return the HTML content
         }
         return "";
+      },
+      setContent: (html: string) => {
+        if (quillRef.current) {
+          quillRef.current.root.innerHTML = html;
+        }
       },
     };
   }
