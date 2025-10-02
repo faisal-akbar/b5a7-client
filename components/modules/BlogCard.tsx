@@ -9,10 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { calculateReadingTime } from "@/lib/calculateReadingTime";
 import { formatDate } from "@/lib/formatDate";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { CalendarDays, Eye } from "lucide-react";
+import { CalendarDays, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -45,6 +46,7 @@ interface BlogCardProps {
 
 export const BlogCard = ({ blog, className, index = 0 }: BlogCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const readingTime = calculateReadingTime(blog.content) || 5;
 
   return (
     <Link
@@ -169,10 +171,14 @@ export const BlogCard = ({ blog, className, index = 0 }: BlogCardProps) => {
                 <CalendarDays className="h-4 w-4" />
                 <span>{formatDate(blog.createdAt)}</span>
               </div>
-              <div className="flex items-center gap-1 ml-auto">
+              {/* <div className="flex items-center gap-1 ml-auto">
                 <Eye className="h-4 w-4" />
                 <span>{blog.views}</span>
-              </div>
+              </div> */}
+              <span className="flex items-center gap-1 ml-auto">
+                <Clock className="h-4 w-4" />
+                {readingTime} min read
+              </span>
             </motion.div>
           </CardContent>
 

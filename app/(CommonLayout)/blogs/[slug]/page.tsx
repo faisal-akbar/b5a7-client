@@ -2,6 +2,7 @@ import { Container } from "@/components/modules/Container";
 import { TableOfContents } from "@/components/modules/TableOfContents";
 import ViewCounter from "@/components/modules/ViewCounter";
 import { Badge } from "@/components/ui/badge";
+import { calculateReadingTime } from "@/lib/calculateReadingTime";
 import { formatDate } from "@/lib/formatDate";
 import { CalendarDays, Clock, Edit3 } from "lucide-react";
 import Image from "next/image";
@@ -33,14 +34,6 @@ interface BlogPostPageProps {
   }>;
 }
 
-// Calculate reading time based on word count
-function calculateReadingTime(content: string): number {
-  const wordsPerMinute = 200;
-  const wordCount = content.split(/\s+/).length;
-  return Math.ceil(wordCount / wordsPerMinute);
-}
-
-// Generate static params for ISR
 export async function generateStaticParams() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {
@@ -80,7 +73,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     }
 
     const { data: blog }: { data: BlogPost } = await res.json();
-    const readingTime = calculateReadingTime(blog.content);
+    const readingTime = calculateReadingTime(blog.content) || 5;
 
     return (
       <Container className="mt-10 px-3">
