@@ -1,14 +1,9 @@
 import { DashboardBlogCardGrid } from "@/components/modules/dashboard/DashboardBlogCardGrid";
 import Information from "@/components/modules/Information";
-import config from "@/config";
+import { getBlogs } from "@/services/Blog";
 
 async function page() {
-  const res = await fetch(`${config.baseUrl}/blog`, {
-    next: {
-      tags: ["blogs"],
-    },
-  });
-  const { data: blogs } = await res.json();
+  const { data: blogs } = await getBlogs();
 
   if (!blogs || blogs.length === 0) {
     return <Information message="No blogs found." />;

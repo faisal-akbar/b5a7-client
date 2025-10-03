@@ -21,7 +21,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { getProjectById, updateProject } from "@/services/Project";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Code, Eye, Sparkles, X } from "lucide-react";
+import { Code, Eye, Loader2, Sparkles, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -307,28 +307,26 @@ export default function EditProjectForm({ projectId }: EditProjectFormProps) {
                       </Button>
                     </div>
                     {features.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-3">
+                      <ul className="mt-3 list-disc pl-6 space-y-1">
                         {features.map((feature) => (
-                          <Badge
+                          <li
                             key={feature}
-                            variant="secondary"
-                            className="text-sm px-3 py-1.5 gap-1.5 hover:bg-secondary/80 transition-colors"
+                            className="text-sm flex items-center gap-2"
                           >
-                            {feature}
+                            <span className="flex-1">{feature}</span>
                             <button
                               type="button"
                               onClick={() => removeFeature(feature)}
-                              className="ml-1 hover:text-destructive transition-colors"
+                              className="inline-flex items-center justify-center rounded hover:text-destructive transition-colors"
+                              aria-label={`Remove ${feature}`}
                             >
                               <X className="h-3 w-3" />
                             </button>
-                          </Badge>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     )}
-                    <FormDescription>
-                      Add key features of your project
-                    </FormDescription>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -379,9 +377,7 @@ export default function EditProjectForm({ projectId }: EditProjectFormProps) {
                         ))}
                       </div>
                     )}
-                    <FormDescription>
-                      Add technologies used in your project
-                    </FormDescription>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -425,7 +421,7 @@ export default function EditProjectForm({ projectId }: EditProjectFormProps) {
                             </FormLabel>
                           </div>
                           <FormDescription className="text-xs">
-                            Highlight this on the homepage
+                            Highlight this as a featured project
                           </FormDescription>
                         </div>
                         <Switch
@@ -468,8 +464,15 @@ export default function EditProjectForm({ projectId }: EditProjectFormProps) {
                     type="submit"
                     size="lg"
                     className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 h-12"
+                    disabled={form.formState.isSubmitting}
+                    aria-busy={form.formState.isSubmitting}
                   >
-                    Update Project
+                    {form.formState.isSubmitting && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {form.formState.isSubmitting
+                      ? "Updating..."
+                      : "Update Project"}
                   </Button>
                   <Button
                     type="button"

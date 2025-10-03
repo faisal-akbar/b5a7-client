@@ -21,7 +21,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { updateBlog } from "@/services/Blog";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, Sparkles, X } from "lucide-react";
+import { Eye, Loader2, Sparkles, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -361,8 +361,13 @@ export default function EditBlogForm({ blog }: { blog: Blog }) {
                     type="submit"
                     size="lg"
                     className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 h-12"
+                    disabled={form.formState.isSubmitting}
+                    aria-busy={form.formState.isSubmitting}
                   >
-                    Save Changes
+                    {form.formState.isSubmitting && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
                   </Button>
                   <Button
                     type="button"

@@ -1,8 +1,33 @@
 "use server";
 import config from "@/config";
 import { getValidToken } from "@/lib/verifyToken";
+import { IProjectData, IProjectResponse } from "@/types";
 import { revalidateTag } from "next/cache";
 
+// Public
+export const getProjects = async (): Promise<
+  IProjectResponse<IProjectData[]>
+> => {
+  const res = await fetch(`${config.baseUrl}/project?isPublished=true`, {
+    next: {
+      tags: ["projects"],
+    },
+  });
+  return res.json();
+};
+
+export const getProjectBySlug = async (
+  slug: string
+): Promise<IProjectResponse<IProjectData>> => {
+  const res = await fetch(`${config.baseUrl}/project/slug/${slug}`, {
+    next: {
+      tags: ["project_slug"],
+    },
+  });
+  return res.json();
+};
+
+// Admin Dashboard
 export const createProject = async (projectData: FormData): Promise<any> => {
   const token = await getValidToken();
 
@@ -95,4 +120,3 @@ export const deleteProject = async (id: string | number): Promise<any> => {
     throw new Error("Failed to delete project");
   }
 };
-

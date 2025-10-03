@@ -2,32 +2,14 @@ import { Container } from "@/components/modules/Container";
 import { TableOfContents } from "@/components/modules/TableOfContents";
 import ViewCounter from "@/components/modules/ViewCounter";
 import { Badge } from "@/components/ui/badge";
-import config from "@/config";
 import { calculateReadingTime } from "@/lib/calculateReadingTime";
 import { formatDate } from "@/lib/formatDate";
+import { getBlogBySlug, getBlogs } from "@/services/Blog";
+import { IBlogPost } from "@/types/blog";
 import { CalendarDays, Clock, Edit3 } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-
-interface BlogPost {
-  id: number;
-  title: string;
-  slug: string;
-  thumbnail: string;
-  content: string;
-  excerpt: string;
-  tags: string[];
-  isFeatured: boolean;
-  isPublished: boolean;
-  views: number;
-  authorId: number;
-  createdAt: string;
-  updatedAt: string;
-  author: {
-    name: string;
-  };
-}
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -37,18 +19,8 @@ interface BlogPostPageProps {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch(`${config.baseUrl}/blog?isPublished=true`, {
-      next: {
-        tags: ["blogs", "blog_post"], // Include both tags for proper revalidation
-      },
-    });
-
-    if (!res.ok) {
-      return [];
-    }
-
-    const { data: blogs } = await res.json();
-    return blogs.map((blog: BlogPost) => ({
+    const { data: blogs } = await getBlogs();
+    return blogs.map((blog: IBlogPost) => ({
       slug: blog.slug,
     }));
   } catch (error) {
@@ -60,17 +32,12 @@ export async function generateStaticParams() {
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   try {
     const { slug } = await params;
-    const res = await fetch(`${config.baseUrl}/blog/${slug}`, {
-      next: {
-        tags: ["blog_post", "blogs", "home"], // Include all relevant tags
-      },
-    });
+    const { data: blog } = await getBlogBySlug(slug);
 
-    if (!res.ok) {
+    if (!blog) {
       notFound();
     }
 
-    const { data: blog }: { data: BlogPost } = await res.json();
     const readingTime = calculateReadingTime(blog.content) || 5;
 
     return (

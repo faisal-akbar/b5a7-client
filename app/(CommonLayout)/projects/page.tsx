@@ -1,15 +1,11 @@
 import { Container } from "@/components/modules/Container";
 import { Heading } from "@/components/modules/Heading";
+import Information from "@/components/modules/Information";
 import { ProjectCardGrid } from "@/components/modules/ProjectCardGrid";
-import config from "@/config";
+import { getProjects } from "@/services/Project";
 
 export default async function ProjectPage() {
-  const res = await fetch(`${config.baseUrl}/project?isPublished=true`, {
-    next: {
-      tags: ["projects"],
-    },
-  });
-  const { data: projects } = await res.json();
+  const { data: projects } = await getProjects();
 
   return (
     <Container className="mt-10 px-3">
@@ -24,7 +20,7 @@ export default async function ProjectPage() {
 
         <div>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!projects.length && <div className="mt-6">No projects found.</div>}
+          {!projects.length && <Information message="No projects found." />}
 
           <div className="max-w-7xl mx-auto mt-10">
             <ProjectCardGrid projects={projects} columns={3} />

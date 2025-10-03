@@ -8,33 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import config from "@/config";
 import GithubIcon from "@/icons/github-icon";
 import { formatDate } from "@/lib/formatDate";
+import { getProjectBySlug, getProjects } from "@/services/Project";
+import { IProjectData } from "@/types";
 import { CalendarDays, Code, ExternalLink, Wrench } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-interface Project {
-  id: number;
-  title: string;
-  slug: string;
-  description: string;
-  projectLink: string;
-  liveSite: string;
-  thumbnail: string;
-  features: string[];
-  techStack: string[];
-  isFeatured: boolean;
-  isPublished: boolean;
-  ownerId: number;
-  createdAt: string;
-  updatedAt: string;
-  owner: {
-    name: string;
-  };
-}
 
 interface ProjectPageProps {
   params: Promise<{
@@ -44,18 +25,9 @@ interface ProjectPageProps {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch(`${config.baseUrl}/project?isPublished=true`, {
-      next: {
-        tags: ["projects", "project"],
-      },
-    });
+    const { data: projects } = await getProjects();
 
-    if (!res.ok) {
-      return [];
-    }
-
-    const { data: projects } = await res.json();
-    return projects.map((project: Project) => ({
+    return projects.map((project: IProjectData) => ({
       slug: project.slug,
     }));
   } catch (error) {
@@ -67,17 +39,11 @@ export async function generateStaticParams() {
 export default async function ProjectPage({ params }: ProjectPageProps) {
   try {
     const { slug } = await params;
-    const res = await fetch(`${config.baseUrl}/project/${slug}`, {
-      next: {
-        tags: ["project", "projects"],
-      },
-    });
+    const { data: project } = await getProjectBySlug(slug);
 
-    if (!res.ok) {
+    if (!project) {
       notFound();
     }
-
-    const { data: project }: { data: Project } = await res.json();
 
     return (
       <Container className="mt-10 px-3">

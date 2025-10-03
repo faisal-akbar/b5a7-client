@@ -10,7 +10,6 @@ export default async function EditBlogPage({ params }: PageProps) {
   const { blogId } = await params;
   const blog = await getBlogById(blogId);
 
-  console.log(blog);
   if (!blog || !blog.data) {
     return notFound();
   }

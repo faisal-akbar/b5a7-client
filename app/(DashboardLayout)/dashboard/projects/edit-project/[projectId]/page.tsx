@@ -17,4 +17,3 @@ export default async function EditProjectPage({ params }: PageProps) {
 
   return <EditProjectForm projectId={projectId} />;
 }
-

@@ -1,4 +1,5 @@
 "use client";
+import type { RichTextEditorHandle } from "@/components/modules/dashboard/richTextEditor/RichTextEditor";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +22,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { createBlog } from "@/services/Blog";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, Sparkles, X } from "lucide-react";
+import { Eye, Loader2, Sparkles, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -44,9 +45,7 @@ const RichTextEditor = dynamic(
   }
 );
 
-type RichTextEditorHandle = {
-  getContent: () => string;
-};
+// Using the handle type from the editor ensures ref type compatibility
 
 const formSchema = z.object({
   title: z
@@ -357,8 +356,13 @@ export default function AddBlogForm() {
                     type="submit"
                     size="lg"
                     className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/20 h-12"
+                    disabled={form.formState.isSubmitting}
+                    aria-busy={form.formState.isSubmitting}
                   >
-                    Save Changes
+                    {form.formState.isSubmitting && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {form.formState.isSubmitting ? "Saving..." : "Save Changes"}
                   </Button>
                   <Button
                     type="button"

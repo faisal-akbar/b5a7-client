@@ -18,35 +18,15 @@ import {
 } from "@/components/ui/carousel";
 import { formatDate } from "@/lib/formatDate";
 import { cn } from "@/lib/utils";
+import { IProjectData } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarDays, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-// TypeScript interface for project data
-interface ProjectData {
-  id: number;
-  title: string;
-  slug: string;
-  description: string;
-  projectLink: string;
-  liveSite: string;
-  thumbnail: string;
-  features: string[];
-  techStack: string[];
-  isFeatured: boolean;
-  isPublished: boolean;
-  ownerId: number;
-  createdAt: string;
-  updatedAt: string;
-  owner: {
-    name: string;
-  };
-}
-
 interface ProjectCarouselProps {
-  projects: ProjectData[];
+  projects: IProjectData[];
   className?: string;
 }
 
@@ -92,7 +72,7 @@ export const ProjectCarousel = ({
 };
 
 interface ProjectCardProps {
-  project: ProjectData;
+  project: IProjectData;
   className?: string;
   index?: number;
 }

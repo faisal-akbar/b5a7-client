@@ -1,8 +1,31 @@
 "use server";
 import config from "@/config";
 import { getValidToken } from "@/lib/verifyToken";
+import { IBlogPost, IBlogPostResponse } from "@/types/blog";
 import { revalidateTag } from "next/cache";
 
+// Public
+export const getBlogs = async (): Promise<IBlogPostResponse<IBlogPost[]>> => {
+  const res = await fetch(`${config.baseUrl}/blog?isPublished=true`, {
+    next: {
+      tags: ["blogs"],
+    },
+  });
+  return res.json();
+};
+
+export const getBlogBySlug = async (
+  slug: string
+): Promise<IBlogPostResponse<IBlogPost>> => {
+  const res = await fetch(`${config.baseUrl}/blog/${slug}`, {
+    next: {
+      tags: ["blog_post"],
+    },
+  });
+  return res.json();
+};
+
+// Admin Dashboard
 export const createBlog = async (blogData: FormData): Promise<any> => {
   const token = await getValidToken();
 

@@ -5,10 +5,11 @@ import { Heading } from "@/components/modules/Heading";
 import Information from "@/components/modules/Information";
 import { ProjectCarousel } from "@/components/modules/ProjectCarousel";
 import { Button } from "@/components/ui/button";
-import config from "@/config";
 import GithubIcon from "@/icons/github-icon";
 import LinkedinIcon from "@/icons/linkedin-icon";
 import TwitterIcon from "@/icons/twitter-icon";
+import { getBlogs } from "@/services/Blog";
+import { getProjects } from "@/services/Project";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 
@@ -16,22 +17,9 @@ const MAX_BLOG = 6;
 const MAX_PROJECT = 4;
 
 export default async function HomePage() {
-  const res = await fetch(`${config.baseUrl}/blog?&isPublished=true`, {
-    next: {
-      tags: ["blogs"],
-    },
-  });
-  const { data: blogs } = await res.json();
+  const { data: blogs } = await getBlogs();
 
-  const resProjects = await fetch(
-    `${config.baseUrl}/project?&isPublished=true`,
-    {
-      next: {
-        tags: ["projects"],
-      },
-    }
-  );
-  const { data: projects } = await resProjects.json();
+  const { data: projects } = await getProjects();
 
   return (
     <Container className="mt-10 px-3">

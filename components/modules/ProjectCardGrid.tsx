@@ -1,30 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { IProjectData } from "@/types";
 import { ProjectCard } from "./ProjectCard";
 
-interface ProjectData {
-  id: number;
-  title: string;
-  slug: string;
-  description: string;
-  projectLink: string;
-  liveSite: string;
-  thumbnail: string;
-  features: string[];
-  techStack: string[];
-  isFeatured: boolean;
-  isPublished: boolean;
-  ownerId: number;
-  createdAt: string;
-  updatedAt: string;
-  owner: {
-    name: string;
-  };
-}
-
 interface ProjectCardGridProps {
-  projects: ProjectData[];
+  projects: IProjectData[];
   className?: string;
   columns?: 1 | 2 | 3 | 4;
 }
@@ -51,4 +32,3 @@ export const ProjectCardGrid = ({
     </div>
   );
 };
-

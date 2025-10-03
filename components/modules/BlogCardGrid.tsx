@@ -1,29 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { IBlogPost } from "@/types";
 import { BlogCard } from "./BlogCard";
 
-interface BlogData {
-  id: number;
-  title: string;
-  slug: string;
-  thumbnail: string;
-  content: string;
-  excerpt: string;
-  tags: string[];
-  isFeatured: boolean;
-  isPublished: boolean;
-  views: number;
-  authorId: number;
-  createdAt: string;
-  updatedAt: string;
-  author: {
-    name: string;
-  };
-}
-
 interface BlogCardGridProps {
-  blogs: BlogData[];
+  blogs: IBlogPost[];
   className?: string;
   columns?: 1 | 2 | 3 | 4;
 }

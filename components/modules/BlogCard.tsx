@@ -12,34 +12,15 @@ import {
 import { calculateReadingTime } from "@/lib/calculateReadingTime";
 import { formatDate } from "@/lib/formatDate";
 import { cn } from "@/lib/utils";
+import { IBlogPost } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarDays, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-// TypeScript interface for blog data
-interface BlogData {
-  id: number;
-  title: string;
-  slug: string;
-  thumbnail: string;
-  content: string;
-  excerpt: string;
-  tags: string[];
-  isFeatured: boolean;
-  isPublished: boolean;
-  views: number;
-  authorId: number;
-  createdAt: string;
-  updatedAt: string;
-  author: {
-    name: string;
-  };
-}
-
 interface BlogCardProps {
-  blog: BlogData;
+  blog: IBlogPost;
   className?: string;
   index?: number;
 }
