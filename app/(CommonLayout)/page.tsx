@@ -2,18 +2,22 @@ import { BlogCardGrid } from "@/components/modules/BlogCardGrid";
 import { Container } from "@/components/modules/Container";
 import { Flipper } from "@/components/modules/flipper";
 import { Heading } from "@/components/modules/Heading";
+import { Button } from "@/components/ui/button";
 import GithubIcon from "@/icons/github-icon";
 import LinkedinIcon from "@/icons/linkedin-icon";
 import TwitterIcon from "@/icons/twitter-icon";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 
+const MAX_BLOG = 6;
+const MAX_PROJECT = 3;
+
 export default async function HomePage() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_API}/blog?isFeatured=true&isPublished=true`,
     {
       next: {
-        tags: ["blogs", "blog_post"],
+        tags: ["blogs"],
       },
     }
   );
@@ -82,14 +86,35 @@ export default async function HomePage() {
         </div>
         <div>
           <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-5xl">
+            Featured Project
+          </h2>
+          <hr className="border-gray-200 dark:border-gray-700" />
+          {!blogs.length && <div className="mt-6">No blogs found.</div>}
+
+          <div className="max-w-7xl mx-auto mt-10">
+            <BlogCardGrid blogs={blogs.slice(0, MAX_BLOG)} columns={3} />
+          </div>
+          <Button asChild>
+            <Link href="/projects" className="mt-6">
+              View All Projects
+            </Link>
+          </Button>
+        </div>
+        <div>
+          <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-5xl">
             Featured Posts
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
           {!blogs.length && <div className="mt-6">No blogs found.</div>}
 
-          <div className="max-w-7xl mx-auto mt-7">
-            <BlogCardGrid blogs={blogs} columns={3} />
+          <div className="max-w-7xl mx-auto mt-10">
+            <BlogCardGrid blogs={blogs.slice(0, MAX_BLOG)} columns={3} />
           </div>
+          <Button asChild>
+            <Link href="/blogs" className="mt-6">
+              View All Blogs
+            </Link>
+          </Button>
         </div>
       </div>
     </Container>

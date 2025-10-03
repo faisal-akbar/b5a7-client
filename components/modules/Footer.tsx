@@ -48,7 +48,7 @@ function Footer({
   return (
     <footer
       id="footer"
-      className="mt-7 flex flex-wrap justify-between break-words  border-t border-solid border-zinc-300 px-2 pt-4 leading-6 text-neutral-900 text-base focus:outline-offset-2 dark:border-zinc-500 dark:text-neutral-300"
+      className="mt-15 flex flex-wrap justify-between break-words  border-t border-solid border-zinc-300 px-2 pt-4 leading-6 text-neutral-900 text-base focus:outline-offset-2 dark:border-zinc-500 dark:text-neutral-300"
     >
       <ul className="flex flex-col space-x-0 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
         <FooterMenu footerMenu={footerMenu} />

@@ -1,3 +1,4 @@
+import { Container } from "@/components/modules/Container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getAbout } from "@/services/About";
-import { Download, Edit, User } from "lucide-react";
+import { Edit, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -68,7 +69,9 @@ export default async function AboutPage() {
               <div className="p-2 rounded-lg bg-primary/10">
                 <User className="h-5 w-5 text-primary" />
               </div>
-              <CardTitle className="text-3xl font-bold">About Me</CardTitle>
+              <CardTitle className="text-3xl font-bold">
+                Preview About Me
+              </CardTitle>
             </div>
             <Link href="/dashboard/about/edit">
               <Button className="flex items-center gap-2">
@@ -77,66 +80,67 @@ export default async function AboutPage() {
               </Button>
             </Link>
           </div>
-          <CardDescription className="text-base">
-            Personal and professional information
-          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Profile Image and Title */}
-          <div className="flex flex-col md:flex-row gap-6 items-start">
-            {aboutData.thumbnail && (
-              <div className="relative w-32 h-32 rounded-lg overflow-hidden flex-shrink-0">
-                <Image
-                  src={aboutData.thumbnail}
-                  alt="Profile"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-
-            <div className="flex-1 space-y-4">
+          <Container className="mt-10 px-3">
+            <article>
               <div>
-                <h2 className="text-2xl font-bold">{aboutData.title}</h2>
-              </div>
-              {aboutData.resume && (
-                <div>
-                  <a
-                    href={aboutData.resume}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-                  >
-                    <Download className="h-4 w-4" />
-                    Download Resume
-                  </a>
+                <header>
+                  <div className="mb-10 space-y-2">
+                    {/* Title */}
+                    <div>
+                      <h1 className="mb-5 font-extrabold leading-9 tracking-tight text-gray-900 text-3xl dark:text-gray-100 sm:leading-10 sm:text-4xl md:leading-14 md:text-5xl">
+                        {aboutData.title}
+                      </h1>
+                    </div>
+
+                    {/* Featured Image */}
+                    <Image
+                      alt={aboutData.title}
+                      src={aboutData.thumbnail}
+                      width={1080}
+                      height={810}
+                      className="aspect-ratio w-full rounded object-cover"
+                      priority
+                    />
+
+                    {/* Skills */}
+                    {aboutData.skills && aboutData.skills.length > 0 && (
+                      <div className="py-3 xl:py-4">
+                        <h2 className="text-2xl font-bold mb-4">Skills</h2>
+                        <div className="flex flex-wrap items-center gap-2">
+                          {aboutData.skills.map(
+                            (skill: string, index: number) => (
+                              <Badge
+                                key={index}
+                                variant="secondary"
+                                className="text-lg"
+                              >
+                                {skill}
+                              </Badge>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </header>
+
+                {/* Content */}
+                <div className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:grid xl:divide-y-0 space-x-3 xl:grid-cols-4 xl:gap-x-6">
+                  <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
+                    <div className="prose max-w-none pb-8 prose-headings:scroll-mt-24 dark:prose-dark">
+                      <div
+                        id="blog-content"
+                        dangerouslySetInnerHTML={{ __html: aboutData.content }}
+                        className="prose prose-lg max-w-none dark:prose-invert"
+                      />
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
-
-          {/* Skills */}
-          {aboutData.skills && aboutData.skills.length > 0 && (
-            <div>
-              <h3 className="text-lg font-semibold mb-3">Skills</h3>
-              <div className="flex flex-wrap gap-2">
-                {aboutData.skills.map((skill: string, index: number) => (
-                  <Badge key={index} variant="secondary" className="text-sm">
-                    {skill}
-                  </Badge>
-                ))}
               </div>
-            </div>
-          )}
-
-          {/* Content */}
-          <div>
-            <h3 className="text-lg font-semibold mb-3">About</h3>
-            <div
-              className="prose prose-sm max-w-none"
-              dangerouslySetInnerHTML={{ __html: aboutData.content }}
-            />
-          </div>
+            </article>
+          </Container>
         </CardContent>
       </Card>
     </div>

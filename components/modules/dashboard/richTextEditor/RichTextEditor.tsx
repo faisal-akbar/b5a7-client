@@ -30,7 +30,7 @@ const RichTextEditor = ({ ref, initialHtml }: RichTextEditorProps) => {
             [{ color: [] }, { background: [] }],
             [{ align: [] }],
             [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-            ["link", "image", "video"],
+            ["link", "image"],
             ["blockquote", "code-block"],
             [{ script: "sub" }, { script: "super" }],
             ["clean"],
