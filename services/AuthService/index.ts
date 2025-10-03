@@ -1,12 +1,13 @@
 "use server";
 
+import config from "@/config";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
 // export const registerUser = async (userData: FieldValues) => {
 //   try {
-//     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user`, {
+//     const res = await fetch(`${config.baseUrl}/user`, {
 //       method: "POST",
 //       headers: {
 //         "Content-Type": "application/json",
@@ -28,7 +29,7 @@ import { FieldValues } from "react-hook-form";
 
 export const loginUser = async (userData: FieldValues) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/login`, {
+    const res = await fetch(`${config.baseUrl}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,16 +69,13 @@ export const logout = async () => {
 
 export const getNewToken = async () => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/auth/refresh-token`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: (await cookies()).get("refreshToken")!.value,
-        },
-      }
-    );
+    const res = await fetch(`${config.baseUrl}/auth/refresh-token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: (await cookies()).get("refreshToken")!.value,
+      },
+    });
 
     return res.json();
   } catch (error: any) {

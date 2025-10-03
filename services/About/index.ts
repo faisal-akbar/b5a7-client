@@ -1,4 +1,5 @@
 "use server";
+import config from "@/config";
 import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
 
@@ -6,7 +7,7 @@ export const getAbout = async (): Promise<any> => {
   const token = await getValidToken();
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/about`, {
+    const res = await fetch(`${config.baseUrl}/about`, {
       method: "GET",
       headers: {
         Authorization: token,
@@ -32,7 +33,7 @@ export const updateAbout = async (aboutData: FormData): Promise<any> => {
   const token = await getValidToken();
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/about`, {
+    const res = await fetch(`${config.baseUrl}/about`, {
       method: "PATCH",
       body: aboutData,
       headers: {

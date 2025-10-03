@@ -1,16 +1,14 @@
 import { BlogCardGrid } from "@/components/modules/BlogCardGrid";
 import { Container } from "@/components/modules/Container";
 import { Heading } from "@/components/modules/Heading";
+import config from "@/config";
 
 export default async function BlogPage() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/blog?isPublished=true`,
-    {
-      next: {
-        tags: ["blogs"],
-      },
-    }
-  );
+  const res = await fetch(`${config.baseUrl}/blog?isPublished=true`, {
+    next: {
+      tags: ["blogs"],
+    },
+  });
   const { data: blogs } = await res.json();
   return (
     <Container className="mt-10 px-3">

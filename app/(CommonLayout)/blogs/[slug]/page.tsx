@@ -2,6 +2,7 @@ import { Container } from "@/components/modules/Container";
 import { TableOfContents } from "@/components/modules/TableOfContents";
 import ViewCounter from "@/components/modules/ViewCounter";
 import { Badge } from "@/components/ui/badge";
+import config from "@/config";
 import { calculateReadingTime } from "@/lib/calculateReadingTime";
 import { formatDate } from "@/lib/formatDate";
 import { CalendarDays, Clock, Edit3 } from "lucide-react";
@@ -36,14 +37,11 @@ interface BlogPostPageProps {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/blog?isPublished=true`,
-      {
-        next: {
-          tags: ["blogs", "blog_post"], // Include both tags for proper revalidation
-        },
-      }
-    );
+    const res = await fetch(`${config.baseUrl}/blog?isPublished=true`, {
+      next: {
+        tags: ["blogs", "blog_post"], // Include both tags for proper revalidation
+      },
+    });
 
     if (!res.ok) {
       return [];
@@ -62,14 +60,11 @@ export async function generateStaticParams() {
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   try {
     const { slug } = await params;
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/blog/${slug}`,
-      {
-        next: {
-          tags: ["blog_post", "blogs", "home"], // Include all relevant tags
-        },
-      }
-    );
+    const res = await fetch(`${config.baseUrl}/blog/${slug}`, {
+      next: {
+        tags: ["blog_post", "blogs", "home"], // Include all relevant tags
+      },
+    });
 
     if (!res.ok) {
       notFound();

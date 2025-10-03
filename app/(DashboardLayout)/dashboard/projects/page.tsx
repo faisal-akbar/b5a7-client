@@ -1,8 +1,9 @@
 import { DashboardProjectCardGrid } from "@/components/modules/dashboard/DashboardProjectCardGrid";
 import Information from "@/components/modules/Information";
+import config from "@/config";
 
 async function page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`, {
+  const res = await fetch(`${config.baseUrl}/project`, {
     next: {
       tags: ["projects"],
     },
@@ -21,3 +22,4 @@ async function page() {
 }
 
 export default page;
+

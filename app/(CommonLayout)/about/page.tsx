@@ -1,6 +1,7 @@
 import { Container } from "@/components/modules/Container";
 import { TableOfContents } from "@/components/modules/TableOfContents";
 import { Badge } from "@/components/ui/badge";
+import config from "@/config";
 import { calculateReadingTime } from "@/lib/calculateReadingTime";
 import { formatDate } from "@/lib/formatDate";
 import { CalendarDays, Clock, Edit3 } from "lucide-react";
@@ -20,7 +21,7 @@ interface About {
 
 export default async function BlogPostPage() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/about`, {
+    const res = await fetch(`${config.baseUrl}/about`, {
       next: {
         tags: ["about"],
       },

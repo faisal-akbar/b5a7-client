@@ -251,3 +251,4 @@ export const DashboardProjectCard = ({
     </motion.div>
   );
 };
+

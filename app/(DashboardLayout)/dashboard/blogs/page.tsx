@@ -1,8 +1,9 @@
 import { DashboardBlogCardGrid } from "@/components/modules/dashboard/DashboardBlogCardGrid";
 import Information from "@/components/modules/Information";
+import config from "@/config";
 
 async function page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {
+  const res = await fetch(`${config.baseUrl}/blog`, {
     next: {
       tags: ["blogs"],
     },

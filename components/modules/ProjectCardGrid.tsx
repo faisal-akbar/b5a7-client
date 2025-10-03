@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { DashboardProjectCard } from "./DashboardProjectCard";
+import { ProjectCard } from "./ProjectCard";
 
 interface ProjectData {
   id: number;
@@ -23,34 +23,30 @@ interface ProjectData {
   };
 }
 
-interface DashboardProjectCardGridProps {
+interface ProjectCardGridProps {
   projects: ProjectData[];
   className?: string;
   columns?: 1 | 2 | 3 | 4;
 }
 
-export const DashboardProjectCardGrid = ({
+export const ProjectCardGrid = ({
   projects,
   className,
   columns = 3,
-}: DashboardProjectCardGridProps) => {
+}: ProjectCardGridProps) => {
   const gridCols = {
     1: "grid-cols-1",
     2: "grid-cols-1 md:grid-cols-2",
     3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
     4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
-  } as const;
+  };
 
   return (
     <div
       className={cn("grid gap-8 items-stretch", gridCols[columns], className)}
     >
       {projects.map((project, index) => (
-        <DashboardProjectCard
-          key={project.id}
-          project={project}
-          index={index}
-        />
+        <ProjectCard key={project.id} project={project} index={index} />
       ))}
     </div>
   );

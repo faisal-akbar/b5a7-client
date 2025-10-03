@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import config from "@/config";
 import GithubIcon from "@/icons/github-icon";
 import { formatDate } from "@/lib/formatDate";
 import { CalendarDays, Code, ExternalLink, Wrench } from "lucide-react";
@@ -43,14 +44,11 @@ interface ProjectPageProps {
 
 export async function generateStaticParams() {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/project?isPublished=true`,
-      {
-        next: {
-          tags: ["projects", "project"],
-        },
-      }
-    );
+    const res = await fetch(`${config.baseUrl}/project?isPublished=true`, {
+      next: {
+        tags: ["projects", "project"],
+      },
+    });
 
     if (!res.ok) {
       return [];
@@ -69,14 +67,11 @@ export async function generateStaticParams() {
 export default async function ProjectPage({ params }: ProjectPageProps) {
   try {
     const { slug } = await params;
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/project/${slug}`,
-      {
-        next: {
-          tags: ["project", "projects"],
-        },
-      }
-    );
+    const res = await fetch(`${config.baseUrl}/project/${slug}`, {
+      next: {
+        tags: ["project", "projects"],
+      },
+    });
 
     if (!res.ok) {
       notFound();

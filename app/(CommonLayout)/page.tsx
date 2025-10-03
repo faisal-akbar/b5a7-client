@@ -5,6 +5,7 @@ import { Heading } from "@/components/modules/Heading";
 import Information from "@/components/modules/Information";
 import { ProjectCarousel } from "@/components/modules/ProjectCarousel";
 import { Button } from "@/components/ui/button";
+import config from "@/config";
 import GithubIcon from "@/icons/github-icon";
 import LinkedinIcon from "@/icons/linkedin-icon";
 import TwitterIcon from "@/icons/twitter-icon";
@@ -12,21 +13,18 @@ import { Link } from "next-view-transitions";
 import Image from "next/image";
 
 const MAX_BLOG = 6;
-const MAX_PROJECT = 3;
+const MAX_PROJECT = 4;
 
 export default async function HomePage() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/blog?isFeatured=true&isPublished=true`,
-    {
-      next: {
-        tags: ["blogs"],
-      },
-    }
-  );
+  const res = await fetch(`${config.baseUrl}/blog?&isPublished=true`, {
+    next: {
+      tags: ["blogs"],
+    },
+  });
   const { data: blogs } = await res.json();
 
   const resProjects = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/project?isFeatured=true&isPublished=true`,
+    `${config.baseUrl}/project?&isPublished=true`,
     {
       next: {
         tags: ["projects"],
@@ -98,15 +96,15 @@ export default async function HomePage() {
         </div>
         <div>
           <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-5xl">
-            Featured Project
+            Recent Project
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
           {!projects.length && (
-            <Information message="No featured projects found." />
+            <Information message="No recent projects found." />
           )}
 
           <div className="max-w-7xl mx-auto mt-10">
-            <ProjectCarousel projects={projects.slice(0, 5)} />
+            <ProjectCarousel projects={projects.slice(0, MAX_PROJECT)} />
           </div>
           <Button asChild>
             <Link href="/projects" className="mt-6">
@@ -116,10 +114,10 @@ export default async function HomePage() {
         </div>
         <div>
           <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-5xl">
-            Featured Posts
+            Recent Posts
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!blogs.length && <Information message="No featured blogs found." />}
+          {!blogs.length && <Information message="No recent blogs found." />}
 
           <div className="max-w-7xl mx-auto mt-10">
             <BlogCardGrid blogs={blogs.slice(0, MAX_BLOG)} columns={3} />

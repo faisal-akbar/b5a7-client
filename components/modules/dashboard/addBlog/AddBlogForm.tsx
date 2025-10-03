@@ -56,7 +56,7 @@ const formSchema = z.object({
   excerpt: z
     .string()
     .min(1, "Excerpt is required")
-    .max(500, "Excerpt must be less than 500 characters"),
+    .max(300, "Excerpt must be less than 300 characters"),
   tags: z.array(z.string()),
   isFeatured: z.boolean(),
   isPublished: z.boolean(),

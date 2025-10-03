@@ -1,5 +1,6 @@
 // app/posts/[slug]/ViewCounter.tsx
 "use client";
+import config from "@/config";
 import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -8,9 +9,7 @@ export default function ViewCounter({ slug }: { slug: string }) {
   useEffect(() => {
     const getViews = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_API}/blog/views/${slug}`
-        );
+        const res = await fetch(`${config.baseUrl}/blog/views/${slug}`);
         const { data } = await res.json();
         setViews(data.views);
       } catch (error) {
