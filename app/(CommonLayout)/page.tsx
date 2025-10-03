@@ -1,14 +1,17 @@
 import { BlogCardGrid } from "@/components/modules/BlogCardGrid";
+import ContactForm from "@/components/modules/ContactForm";
 import { Container } from "@/components/modules/Container";
 import { Flipper } from "@/components/modules/flipper";
 import { Heading } from "@/components/modules/Heading";
 import Information from "@/components/modules/Information";
 import { ProjectCarousel } from "@/components/modules/ProjectCarousel";
 import { ArrowRightIcon } from "@/components/ui/arrow-right";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GithubIcon } from "@/components/ui/github";
 import { LinkedinIcon } from "@/components/ui/linkedin";
 import { TwitterIcon } from "@/components/ui/twitter";
+import { getAbout } from "@/services/About";
 
 import { getBlogs } from "@/services/Blog";
 import { getProjects } from "@/services/Project";
@@ -20,12 +23,12 @@ const MAX_PROJECT = 4;
 
 export default async function HomePage() {
   const { data: blogs } = await getBlogs();
-
   const { data: projects } = await getProjects();
+  const { data: about } = await getAbout();
 
   return (
     <Container className="mt-10 px-3">
-      <div className="space-y-11">
+      <div className="space-y-16">
         <div className="space-y-9">
           <Image
             src="/images/faisal-akbar.jpg"
@@ -84,8 +87,28 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
+        {about.skills.length > 0 && (
+          <div>
+            <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
+              Skills
+            </h2>
+            <hr className="border-gray-200 dark:border-gray-700" />
+
+            <div className="max-w-7xl mx-auto mt-10 flex flex-wrap gap-3">
+              {about.skills.map((skill) => (
+                <Badge
+                  key={skill}
+                  variant="secondary"
+                  className="text-lg px-3 py-1.5 hover:bg-secondary/80 transition-colors"
+                >
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
         <div>
-          <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-5xl">
+          <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
             Recent Project
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
@@ -103,7 +126,7 @@ export default async function HomePage() {
           </Button>
         </div>
         <div>
-          <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-5xl">
+          <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
             Recent Posts
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
@@ -117,6 +140,21 @@ export default async function HomePage() {
               View All Blogs <ArrowRightIcon />
             </Link>
           </Button>
+        </div>
+        <div>
+          <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
+            Get In Touch
+          </h2>
+          <hr className="border-gray-200 dark:border-gray-700" />
+          <p className="mt-6 text-zinc-600 text-base dark:text-zinc-300">
+            I&apos;m always interested in hearing about new opportunities and
+            interesting projects. Feel free to reach out if you&apos;d like to
+            connect!
+          </p>
+
+          <div className="max-w-4xl mx-auto mt-10">
+            <ContactForm />
+          </div>
         </div>
       </div>
     </Container>

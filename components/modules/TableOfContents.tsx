@@ -25,7 +25,7 @@ export const TableOfContents = ({
       const contentElement = document.getElementById(contentId);
       if (!contentElement) return;
 
-      const headingElements = contentElement.querySelectorAll("h1, h2");
+      const headingElements = contentElement.querySelectorAll("h1, h2, h3");
       const extractedHeadings: Heading[] = [];
 
       headingElements.forEach((heading, index) => {

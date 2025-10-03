@@ -1,10 +1,12 @@
 import { Container } from "@/components/modules/Container";
 import { TableOfContents } from "@/components/modules/TableOfContents";
 import { Badge } from "@/components/ui/badge";
+import { DownloadIcon } from "@/components/ui/download";
 import { calculateReadingTime } from "@/lib/calculateReadingTime";
 import { formatDate } from "@/lib/formatDate";
 import { getAbout } from "@/services/About";
 import { CalendarDays, Clock, Edit3 } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -78,6 +80,20 @@ export default async function BlogPostPage() {
                       </Badge>
                     ))}
                   </div>
+                </div>
+              )}
+              {about.resume && (
+                <div className="py-3 xl:py-4">
+                  <h2 className="text-2xl font-bold mb-4">Resume</h2>
+                  <Link
+                    href={about.resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-lg flex items-center gap-2"
+                  >
+                    <DownloadIcon size={20} />
+                    <span>Download Resume</span>
+                  </Link>
                 </div>
               )}
             </div>

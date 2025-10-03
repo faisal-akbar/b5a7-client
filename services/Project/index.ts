@@ -19,7 +19,7 @@ export const getProjects = async (): Promise<
 export const getProjectBySlug = async (
   slug: string
 ): Promise<IProjectResponse<IProjectData>> => {
-  const res = await fetch(`${config.baseUrl}/project/slug/${slug}`, {
+  const res = await fetch(`${config.baseUrl}/project/${slug}`, {
     next: {
       tags: ["project_slug"],
     },
