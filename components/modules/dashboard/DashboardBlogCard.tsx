@@ -10,10 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DeleteIcon } from "@/components/ui/delete";
+import { FilePenLineIcon } from "@/components/ui/file-pen-line";
 import { cn } from "@/lib/utils";
 import { deleteBlog } from "@/services/Blog";
 import { AnimatePresence, motion } from "framer-motion";
-import { CalendarDays, Edit, Trash2 } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -137,7 +139,8 @@ export const DashboardBlogCard = ({
           <div className="absolute top-3 right-3 z-20 flex gap-2">
             <Link href={`/dashboard/blogs/edit-blog/${blog.id}`}>
               <Button size="icon" variant="secondary" className="h-8 w-8">
-                <Edit className="h-4 w-4" />
+                {/* <Edit className="h-4 w-4" /> */}
+                <FilePenLineIcon />
               </Button>
             </Link>
             {/* <Button
@@ -153,7 +156,8 @@ export const DashboardBlogCard = ({
             <DeleteConfirmation
               trigger={
                 <Button size="icon" variant="destructive" className="h-8 w-8">
-                  <Trash2 className="h-4 w-4" />
+                  <DeleteIcon />
+                  {/* <Trash2 className="h-4 w-4" /> */}
                 </Button>
               }
               title="Are you absolutely sure?"

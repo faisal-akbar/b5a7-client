@@ -4,10 +4,12 @@ import { Flipper } from "@/components/modules/flipper";
 import { Heading } from "@/components/modules/Heading";
 import Information from "@/components/modules/Information";
 import { ProjectCarousel } from "@/components/modules/ProjectCarousel";
+import { ArrowRightIcon } from "@/components/ui/arrow-right";
 import { Button } from "@/components/ui/button";
-import GithubIcon from "@/icons/github-icon";
-import LinkedinIcon from "@/icons/linkedin-icon";
-import TwitterIcon from "@/icons/twitter-icon";
+import { GithubIcon } from "@/components/ui/github";
+import { LinkedinIcon } from "@/components/ui/linkedin";
+import { TwitterIcon } from "@/components/ui/twitter";
+
 import { getBlogs } from "@/services/Blog";
 import { getProjects } from "@/services/Project";
 import { Link } from "next-view-transitions";
@@ -96,7 +98,7 @@ export default async function HomePage() {
           </div>
           <Button asChild>
             <Link href="/projects" className="mt-6">
-              View All Projects
+              View All Projects <ArrowRightIcon />
             </Link>
           </Button>
         </div>
@@ -112,7 +114,7 @@ export default async function HomePage() {
           </div>
           <Button asChild>
             <Link href="/blogs" className="mt-6">
-              View All Blogs
+              View All Blogs <ArrowRightIcon />
             </Link>
           </Button>
         </div>

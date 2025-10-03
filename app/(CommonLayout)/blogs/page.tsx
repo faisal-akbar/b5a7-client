@@ -11,7 +11,7 @@ export default async function BlogPage() {
     <Container className="mt-10 px-3">
       <div className="space-y-6">
         <Heading className="text-left font-bold tracking-tight text-zinc-800 text-4xl  dark:text-zinc-100 sm:text-3xl mr-3">
-          Faisal Akbar
+          Blogs
         </Heading>
         <p className="text-left  tracking-tight md:text-zinc-600 dark:text-zinc-400 text-3xl mr-3">
           A collection of thoughts, inspiration, mistakes, and other long-form

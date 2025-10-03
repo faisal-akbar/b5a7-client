@@ -13,6 +13,10 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
+import { BookTextIcon } from "@/components/ui/book-text";
+import { FoldersIcon } from "@/components/ui/folders";
+import { PlusIcon } from "@/components/ui/plus";
+import { UserIcon } from "@/components/ui/user";
 import Link from "next/link";
 import Logo from "../../Logo";
 import { NavUser } from "../../ui/nav-user";
@@ -22,20 +26,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     {
       title: "Blogs Management",
       items: [
-        { title: "All Blogs", url: "/dashboard/blogs" },
-        { title: "Add Blog", url: "/dashboard/blogs/add-blog" },
+        { title: "All Blogs", url: "/dashboard/blogs", icon: BookTextIcon },
+        { title: "Add Blog", url: "/dashboard/blogs/add-blog", icon: PlusIcon },
       ],
     },
     {
       title: "Projects Management",
       items: [
-        { title: "All Projects", url: "/dashboard/projects" },
-        { title: "Add Project", url: "/dashboard/projects/add-project" },
+        {
+          title: "All Projects",
+          url: "/dashboard/projects",
+          icon: FoldersIcon,
+        },
+        {
+          title: "Add Project",
+          url: "/dashboard/projects/add-project",
+          icon: PlusIcon,
+        },
       ],
     },
     {
       title: "About Me",
-      items: [{ title: "About", url: "/dashboard/about" }],
+      items: [{ title: "About", url: "/dashboard/about", icon: UserIcon }],
     },
   ];
 
@@ -57,7 +69,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.url}>{item.title}</Link>
+                      <Link href={item.url}>
+                        {" "}
+                        {item.icon && <item.icon size={18} />} {item.title}
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

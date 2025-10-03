@@ -190,7 +190,7 @@ const DesktopNav = ({
           );
         })}
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 ju">
         <ModeToggle />
         {user && (
           <Button asChild variant={"outline"}>
@@ -208,46 +208,3 @@ const DesktopNav = ({
     </div>
   );
 };
-
-// const FloatingNav = ({
-//   items,
-// }: {
-//   items: { title: string; href: string }[];
-// }) => {
-//   const { scrollY } = useScroll();
-//   const springConfig = {
-//     stiffness: 300,
-//     damping: 30,
-//   };
-//   const y = useSpring(
-//     useTransform(scrollY, [100, 120], [-100, 10]),
-//     springConfig,
-//   );
-//   return (
-//     <motion.div
-//       style={{ y }}
-//       className="shadow-aceternity fixed inset-x-0 top-0 z-50 mx-auto hidden max-w-[calc(80rem-4rem)] items-center justify-between bg-white/80 px-2 py-2 backdrop-blur-sm md:flex xl:rounded-2xl dark:bg-neutral-900/80 dark:shadow-[0px_2px_0px_0px_var(--color-neutral-800),0px_-2px_0px_0px_var(--color-neutral-800)]"
-//     >
-//       <Logo />
-//       <div className="flex items-center gap-10">
-//         {items.map((item) => (
-//           <Link
-//             className="font-medium text-gray-600 transition duration-200 hover:text-neutral-900 dark:text-gray-300 dark:hover:text-neutral-300"
-//             href={item.href}
-//             key={item.title}
-//           >
-//             {item.title}
-//           </Link>
-//         ))}
-//       </div>
-//       <div className="flex items-center gap-2">
-//         <ModeToggle />
-//         <Button asChild>
-//           <Link href="/login">
-//             Login
-//           </Link>
-//         </Button>
-//       </div>
-//     </motion.div>
-//   );
-// };
