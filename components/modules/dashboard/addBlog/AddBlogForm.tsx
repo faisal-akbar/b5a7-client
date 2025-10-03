@@ -28,7 +28,7 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-import SingleImageUploader from "../dashboard/SingleImageUploader";
+import SingleImageUploader from "../SingleImageUploader";
 
 const RichTextEditor = dynamic(
   () => import("@/components/modules/dashboard/richTextEditor/RichTextEditor"),
@@ -118,7 +118,11 @@ export default function AddBlogForm() {
         toast.success(res.message);
         router.push("/dashboard/blogs");
       } else {
-        toast.error(res.message);
+        if (res.errorMessages.length === 1) {
+          toast.error(res.errorMessages[0].message);
+        } else {
+          toast.error(res.message || "Failed to create blog");
+        }
       }
     } catch (err) {
       console.error(err);

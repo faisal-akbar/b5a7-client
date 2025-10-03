@@ -4,7 +4,7 @@ import { Heading } from "@/components/modules/Heading";
 
 export default async function BlogPage() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/blog?isFeatured=true&isPublished=true`,
+    `${process.env.NEXT_PUBLIC_BASE_API}/blog?isPublished=true`,
     {
       next: {
         tags: ["blogs"],

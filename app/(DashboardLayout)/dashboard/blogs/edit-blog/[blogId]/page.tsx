@@ -1,4 +1,4 @@
-import EditBlogForm from "@/components/modules/addBlog/EditBlogForm";
+import EditBlogForm from "@/components/modules/dashboard/addBlog/EditBlogForm";
 import { getBlogById } from "@/services/Blog";
 import { notFound } from "next/navigation";
 

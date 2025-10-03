@@ -2,6 +2,8 @@ import { BlogCardGrid } from "@/components/modules/BlogCardGrid";
 import { Container } from "@/components/modules/Container";
 import { Flipper } from "@/components/modules/flipper";
 import { Heading } from "@/components/modules/Heading";
+import Information from "@/components/modules/Information";
+import { ProjectCarousel } from "@/components/modules/ProjectCarousel";
 import { Button } from "@/components/ui/button";
 import GithubIcon from "@/icons/github-icon";
 import LinkedinIcon from "@/icons/linkedin-icon";
@@ -22,6 +24,16 @@ export default async function HomePage() {
     }
   );
   const { data: blogs } = await res.json();
+
+  const resProjects = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/project?isFeatured=true&isPublished=true`,
+    {
+      next: {
+        tags: ["projects"],
+      },
+    }
+  );
+  const { data: projects } = await resProjects.json();
 
   return (
     <Container className="mt-10 px-3">
@@ -89,10 +101,12 @@ export default async function HomePage() {
             Featured Project
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!blogs.length && <div className="mt-6">No blogs found.</div>}
+          {!projects.length && (
+            <Information message="No featured projects found." />
+          )}
 
           <div className="max-w-7xl mx-auto mt-10">
-            <BlogCardGrid blogs={blogs.slice(0, MAX_BLOG)} columns={3} />
+            <ProjectCarousel projects={projects.slice(0, 5)} />
           </div>
           <Button asChild>
             <Link href="/projects" className="mt-6">
@@ -105,7 +119,7 @@ export default async function HomePage() {
             Featured Posts
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!blogs.length && <div className="mt-6">No blogs found.</div>}
+          {!blogs.length && <Information message="No featured blogs found." />}
 
           <div className="max-w-7xl mx-auto mt-10">
             <BlogCardGrid blogs={blogs.slice(0, MAX_BLOG)} columns={3} />
