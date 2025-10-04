@@ -57,7 +57,8 @@ export default async function BlogPage() {
 
         <div>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!blogs.length && <Information message="No blogs found." />}
+          {!blogs ||
+            (!blogs.length && <Information message="No recent blogs found." />)}
 
           <div className="max-w-7xl mx-auto mt-10">
             <BlogCardGrid blogs={blogs} columns={3} />

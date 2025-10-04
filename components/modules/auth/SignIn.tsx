@@ -24,7 +24,9 @@ import { loginSchema } from "./LoginValidation";
 export const SignIn = () => {
   const form = useForm({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "super@next.com", password: "ph@123456" },
+    // DEV Only for development purpose
+    // defaultValues: { email: "super@next.com", password: "ph@123456" },
+    defaultValues: { email: "", password: "" },
   });
 
   const { setIsLoading } = useUser();

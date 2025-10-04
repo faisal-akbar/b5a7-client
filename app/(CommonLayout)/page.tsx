@@ -61,7 +61,6 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const { data: blogs } = await getPublishedBlogs();
   const { data: projects } = await getPublishedProjects();
-  console.log("Blogs:", projects);
 
   return (
     <Container className="mt-10 px-3">
