@@ -3,7 +3,7 @@ import { Container } from "@/components/modules/Container";
 import { Heading } from "@/components/modules/Heading";
 import Information from "@/components/modules/Information";
 import { ProjectCardGrid } from "@/components/modules/ProjectCardGrid";
-import { getProjects } from "@/services/Project";
+import { getPublishedProjects } from "@/services/Project";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectPage() {
-  const { data: projects } = await getProjects();
+  const { data: projects } = await getPublishedProjects();
 
   return (
     <Container className="mt-10 px-3">

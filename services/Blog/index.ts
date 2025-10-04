@@ -5,13 +5,24 @@ import { IBlogPost, IBlogPostResponse } from "@/types";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 // Public
-export const getBlogs = async (): Promise<IBlogPostResponse<IBlogPost[]>> => {
-  const res = await fetch(`${config.baseUrl}/blog?isPublished=true`, {
-    next: {
-      tags: ["published_blogs"],
-    },
-  });
-  return res.json();
+export const getPublishedBlogs = async (): Promise<
+  IBlogPostResponse<IBlogPost[]>
+> => {
+  try {
+    const res = await fetch(`${config.baseUrl}/blog/published`, {
+      next: {
+        tags: ["published_blogs"],
+      },
+    });
+    return res.json();
+  } catch (error: unknown) {
+    return {
+      success: false,
+      status: false,
+      message: error instanceof Error ? error.message : "Failed to fetch blogs",
+      data: [],
+    };
+  }
 };
 
 export const getBlogBySlug = async (
@@ -29,7 +40,13 @@ export const getBlogBySlug = async (
 export const getAllBlogs = async (): Promise<
   IBlogPostResponse<IBlogPost[]>
 > => {
+  const token = await getValidToken();
+
   const res = await fetch(`${config.baseUrl}/blog`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
     cache: "no-store",
   });
   return res.json();

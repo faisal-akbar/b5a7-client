@@ -5,7 +5,7 @@ import ViewCounter from "@/components/modules/ViewCounter";
 import { Badge } from "@/components/ui/badge";
 import { calculateReadingTime } from "@/lib/calculateReadingTime";
 import { formatDate } from "@/lib/formatDate";
-import { getBlogBySlug, getBlogs } from "@/services/Blog";
+import { getBlogBySlug, getPublishedBlogs } from "@/services/Blog";
 import { IBlogPost } from "@/types/blog";
 import { CalendarDays, Clock, Edit3 } from "lucide-react";
 import { Metadata } from "next";
@@ -21,7 +21,7 @@ interface BlogPostPageProps {
 
 export async function generateStaticParams() {
   try {
-    const { data: blogs } = await getBlogs();
+    const { data: blogs } = await getPublishedBlogs();
     return blogs.map((blog: IBlogPost) => ({
       slug: blog.slug,
     }));

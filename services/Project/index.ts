@@ -5,15 +5,25 @@ import { IProjectData, IProjectResponse } from "@/types";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 // Public
-export const getProjects = async (): Promise<
+export const getPublishedProjects = async (): Promise<
   IProjectResponse<IProjectData[]>
 > => {
-  const res = await fetch(`${config.baseUrl}/project?isPublished=true`, {
-    next: {
-      tags: ["published_projects"],
-    },
-  });
-  return res.json();
+  try {
+    const res = await fetch(`${config.baseUrl}/project/published`, {
+      next: {
+        tags: ["published_projects"],
+      },
+    });
+    return res.json();
+  } catch (error: unknown) {
+    return {
+      success: false,
+      status: false,
+      message:
+        error instanceof Error ? error.message : "Failed to fetch projects",
+      data: [],
+    };
+  }
 };
 
 export const getProjectBySlug = async (
@@ -31,7 +41,13 @@ export const getProjectBySlug = async (
 export const getAllProjects = async (): Promise<
   IProjectResponse<IProjectData[]>
 > => {
+  const token = await getValidToken();
+
   const res = await fetch(`${config.baseUrl}/project`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
     cache: "no-store",
   });
   return res.json();

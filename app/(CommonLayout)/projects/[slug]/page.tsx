@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import GithubIcon from "@/icons/github-icon";
 import { formatDate } from "@/lib/formatDate";
-import { getProjectBySlug, getProjects } from "@/services/Project";
+import { getProjectBySlug, getPublishedProjects } from "@/services/Project";
 import { IProjectData } from "@/types";
 import { CalendarDays, Code, ExternalLink, Wrench } from "lucide-react";
 import type { Metadata } from "next";
@@ -27,7 +27,7 @@ interface ProjectPageProps {
 
 export async function generateStaticParams() {
   try {
-    const { data: projects } = await getProjects();
+    const { data: projects } = await getPublishedProjects();
 
     return projects.map((project: IProjectData) => ({
       slug: project.slug,

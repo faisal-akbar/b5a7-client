@@ -12,8 +12,9 @@ import { GithubIcon } from "@/components/ui/github";
 import { LinkedinIcon } from "@/components/ui/linkedin";
 import { TwitterIcon } from "@/components/ui/twitter";
 
-import { getBlogs } from "@/services/Blog";
-import { getProjects } from "@/services/Project";
+import { Timeline } from "@/components/modules/timeline";
+import { getPublishedBlogs } from "@/services/Blog";
+import { getPublishedProjects } from "@/services/Project";
 import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
@@ -58,8 +59,9 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const { data: blogs } = await getBlogs();
-  const { data: projects } = await getProjects();
+  const { data: blogs } = await getPublishedBlogs();
+  const { data: projects } = await getPublishedProjects();
+  console.log("Blogs:", projects);
 
   return (
     <Container className="mt-10 px-3">
@@ -122,6 +124,9 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
+        <div>
+          <Timeline />
+        </div>
         {personalData.skills.length > 0 && (
           <div>
             <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
@@ -165,7 +170,8 @@ export default async function HomePage() {
             Recent Posts
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!blogs.length && <Information message="No recent blogs found." />}
+          {!blogs ||
+            (!blogs.length && <Information message="No recent blogs found." />)}
 
           <div className="max-w-7xl mx-auto mt-10">
             <BlogCardGrid blogs={blogs.slice(0, MAX_BLOG)} columns={3} />

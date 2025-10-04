@@ -19,7 +19,7 @@ export interface IBlogPostResponse<T> {
 export interface IProjectResponse<T> {
   data: T;
   meta?: IMeta;
-  status: boolean;
-  message: string;
-  success: boolean;
+  status?: boolean;
+  message?: string;
+  success?: boolean;
 }
