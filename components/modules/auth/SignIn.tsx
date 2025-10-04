@@ -29,7 +29,7 @@ export const SignIn = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  const { setIsLoading } = useUser();
+  const { setIsLoading, refreshUser } = useUser();
 
   const router = useRouter();
 
@@ -43,7 +43,8 @@ export const SignIn = () => {
       setIsLoading(true);
       if (res?.success) {
         toast.success(res?.message);
-
+        // Refresh user data after successful login
+        await refreshUser();
         router.push("/dashboard/blogs");
       } else {
         toast.error(res?.message);

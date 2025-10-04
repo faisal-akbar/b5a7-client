@@ -16,6 +16,7 @@ interface IUserProviderValues {
   isLoading: boolean;
   setUser: (user: IUser | null) => void;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
+  refreshUser: () => Promise<void>;
 }
 
 const UserContext = createContext<IUserProviderValues | undefined>(undefined);
@@ -34,8 +35,16 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     handleUser();
   }, [isLoading]);
 
+  // Add a function to refresh user data
+  const refreshUser = async () => {
+    setIsLoading(true);
+    await handleUser();
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
+    <UserContext.Provider
+      value={{ user, setUser, isLoading, setIsLoading, refreshUser }}
+    >
       {children}
     </UserContext.Provider>
   );
