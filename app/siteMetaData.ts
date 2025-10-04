@@ -6,7 +6,7 @@ const siteMetadata = {
     "Software Engineer based in New York City. Passionate about building high-quality web applications with React, Next.js, TypeScript, and modern technologies. Explore my projects, blog posts, and professional journey.",
   language: "en-us",
   theme: "system",
-  siteUrl: "https://dsfaisal.com",
+  siteUrl: "https://b5a7-client.vercel.app",
   siteRepo: "https://github.com/faisal-akbar/",
   siteLogo: "/images/faisal-akbar.jpg",
   image: "/images/faisal-akbar.jpg",
@@ -36,7 +36,7 @@ const siteMetadata = {
   openGraph: {
     type: "website" as const,
     locale: "en_US",
-    url: "https://dsfaisal.com",
+    url: "https://b5a7-client.vercel.app",
     title: "Faisal Akbar - Software Engineer & Full Stack Developer",
     description:
       "Software Engineer based in New York City. Passionate about building high-quality web applications with React, Next.js, TypeScript, and modern technologies.",
