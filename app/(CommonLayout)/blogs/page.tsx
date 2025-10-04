@@ -15,7 +15,7 @@ export default async function BlogPage() {
         </Heading>
         <p className="text-left  tracking-tight md:text-zinc-600 dark:text-zinc-400 text-3xl mr-3">
           A collection of thoughts, inspiration, mistakes, and other long-form
-          minutia I've written.
+          minutia I&#39;ve written.
         </p>
 
         <div>

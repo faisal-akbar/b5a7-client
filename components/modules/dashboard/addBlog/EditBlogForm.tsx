@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import slugify from "slugify";
 import { toast } from "sonner";
 import z from "zod";
 import SingleImageUploader from "../SingleImageUploader";
@@ -124,11 +126,15 @@ export default function EditBlogForm({ blog }: { blog: Blog }) {
 
     try {
       const res = await updateBlog(blog.id, payload);
+      console.log(res);
+
       if (res.success) {
         toast.success(res.message);
         router.push(`/dashboard/blogs`);
       } else {
+        // @ts-expect-error
         if (res.errorMessages.length === 1) {
+          // @ts-expect-error
           toast.error(res.errorMessages[0].message);
         } else {
           toast.error(res.message || "Failed to edit blog");
@@ -193,6 +199,16 @@ export default function EditBlogForm({ blog }: { blog: Blog }) {
                       className="h-11 text-base focus-visible:ring-2 focus-visible:ring-primary"
                     />
                     <FormMessage />
+                    <FormDescription>
+                      {field.value && (
+                        <>
+                          <span>Generated Slug: </span>
+                          {slugify(field.value, {
+                            lower: true,
+                          })}
+                        </>
+                      )}
+                    </FormDescription>
                   </FormItem>
                 )}
               />

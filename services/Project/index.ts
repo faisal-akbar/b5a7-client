@@ -2,7 +2,7 @@
 import config from "@/config";
 import { getValidToken } from "@/lib/verifyToken";
 import { IProjectData, IProjectResponse } from "@/types";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 // Public
 export const getProjects = async (): Promise<
@@ -10,7 +10,7 @@ export const getProjects = async (): Promise<
 > => {
   const res = await fetch(`${config.baseUrl}/project?isPublished=true`, {
     next: {
-      tags: ["projects"],
+      tags: ["published_projects"],
     },
   });
   return res.json();
@@ -21,14 +21,25 @@ export const getProjectBySlug = async (
 ): Promise<IProjectResponse<IProjectData>> => {
   const res = await fetch(`${config.baseUrl}/project/${slug}`, {
     next: {
-      tags: ["project_slug"],
+      tags: [`project_slug_${slug}`],
     },
   });
   return res.json();
 };
 
 // Admin Dashboard
-export const createProject = async (projectData: FormData): Promise<any> => {
+export const getAllProjects = async (): Promise<
+  IProjectResponse<IProjectData[]>
+> => {
+  const res = await fetch(`${config.baseUrl}/project`, {
+    cache: "no-store",
+  });
+  return res.json();
+};
+
+export const createProject = async (
+  projectData: FormData
+): Promise<IProjectResponse<IProjectData>> => {
   const token = await getValidToken();
 
   try {
@@ -40,9 +51,15 @@ export const createProject = async (projectData: FormData): Promise<any> => {
       },
     });
 
-    revalidateTag("projects");
+    const result = await res.json();
 
-    return res.json();
+    revalidateTag("published_projects");
+    if (result.success && result.data?.slug) {
+      revalidateTag(`project_slug_${result.data.slug}`);
+      revalidatePath(`/projects/${result.data.slug}`);
+    }
+
+    return result;
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw new Error(error.message || "Something went wrong");
@@ -51,7 +68,9 @@ export const createProject = async (projectData: FormData): Promise<any> => {
   }
 };
 
-export const getProjectById = async (id: string | number): Promise<any> => {
+export const getProjectById = async (
+  id: string | number
+): Promise<IProjectResponse<IProjectData>> => {
   const token = await getValidToken();
 
   try {
@@ -62,7 +81,6 @@ export const getProjectById = async (id: string | number): Promise<any> => {
       },
       cache: "no-store",
     });
-    console.log("Fetch response:", res);
 
     if (!res.ok) {
       throw new Error("Failed to fetch project data");
@@ -80,7 +98,7 @@ export const getProjectById = async (id: string | number): Promise<any> => {
 export const updateProject = async (
   id: string | number,
   projectData: FormData
-): Promise<any> => {
+): Promise<IProjectResponse<IProjectData>> => {
   const token = await getValidToken();
 
   try {
@@ -91,8 +109,17 @@ export const updateProject = async (
         Authorization: token,
       },
     });
-    revalidateTag("projects");
-    return res.json();
+
+    const result = await res.json();
+
+    // Revalidate project lists
+    revalidateTag("published_projects");
+    if (result.success && result.data?.slug) {
+      revalidateTag(`project_slug_${result.data.slug}`);
+      revalidatePath(`/projects/${result.data.slug}`);
+    }
+
+    return result;
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw new Error(error.message || "Failed to update project");
@@ -111,7 +138,7 @@ export const deleteProject = async (id: string | number): Promise<any> => {
         Authorization: token,
       },
     });
-    revalidateTag("projects");
+    revalidateTag("published_projects");
     return res.json();
   } catch (error: unknown) {
     if (error instanceof Error) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import { Code, Eye, Loader2, Sparkles, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import slugify from "slugify";
 import { toast } from "sonner";
 import z from "zod";
 import SingleImageUploader from "../SingleImageUploader";
@@ -102,7 +104,9 @@ export default function EditProjectForm({ projectId }: EditProjectFormProps) {
           setTechStack(project.techStack || []);
           setExistingImage(project.thumbnail);
         } else {
+          // @ts-expect-error
           if (res.errorMessages.length === 1) {
+            // @ts-expect-error
             toast.error(res.errorMessages[0].message);
           } else {
             toast.error(res.message || "Failed to edit project");
@@ -219,6 +223,16 @@ export default function EditProjectForm({ projectId }: EditProjectFormProps) {
                       className="h-11 text-base focus-visible:ring-2 focus-visible:ring-primary"
                     />
                     <FormMessage />
+                    <FormDescription>
+                      {field.value && (
+                        <>
+                          <span>Generated Slug: </span>
+                          {slugify(field.value, {
+                            lower: true,
+                          })}
+                        </>
+                      )}
+                    </FormDescription>
                   </FormItem>
                 )}
               />

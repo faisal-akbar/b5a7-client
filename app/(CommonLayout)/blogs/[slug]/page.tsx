@@ -93,7 +93,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <div className="py-3 text-sm sm:text-base xl:py-4">
                   <div className="flex flex-wrap items-center">
                     <div className="">
-                      {blog.tags.map((tag, index) => (
+                      {blog.tags.map((tag: string, index: number) => (
                         <Badge
                           key={index}
                           variant="outline"

@@ -2,7 +2,7 @@
 import config from "@/config";
 import { getValidToken } from "@/lib/verifyToken";
 import { IAbout, IAboutResponse } from "@/types";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const getAbout = async (): Promise<IAboutResponse<IAbout>> => {
   const res = await fetch(`${config.baseUrl}/about`, {
@@ -10,6 +10,11 @@ export const getAbout = async (): Promise<IAboutResponse<IAbout>> => {
       tags: ["about"],
     },
   });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch about data: ${res.status}`);
+  }
+
   return res.json();
 };
 
@@ -40,8 +45,9 @@ export const getAbout = async (): Promise<IAboutResponse<IAbout>> => {
 //   }
 // };
 
-export const updateAbout = async (aboutData: FormData): Promise<any> => {
-  console.log("Updating about with data:", aboutData);
+export const updateAbout = async (
+  aboutData: FormData
+): Promise<IAboutResponse<IAbout>> => {
   const token = await getValidToken();
 
   try {
@@ -53,7 +59,14 @@ export const updateAbout = async (aboutData: FormData): Promise<any> => {
       },
     });
 
-    revalidateTag("about");
+    const result = await res.json();
+
+    // Revalidate about page cache
+    if (result.success) {
+      revalidateTag("about");
+      revalidatePath("/about");
+      revalidatePath("/dashboard/about");
+    }
 
     return res.json();
   } catch (error: unknown) {

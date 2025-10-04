@@ -1,14 +1,14 @@
 "use server";
 import config from "@/config";
 import { getValidToken } from "@/lib/verifyToken";
-import { IBlogPost, IBlogPostResponse } from "@/types/blog";
-import { revalidateTag } from "next/cache";
+import { IBlogPost, IBlogPostResponse } from "@/types";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 // Public
 export const getBlogs = async (): Promise<IBlogPostResponse<IBlogPost[]>> => {
   const res = await fetch(`${config.baseUrl}/blog?isPublished=true`, {
     next: {
-      tags: ["blogs"],
+      tags: ["published_blogs"],
     },
   });
   return res.json();
@@ -19,14 +19,25 @@ export const getBlogBySlug = async (
 ): Promise<IBlogPostResponse<IBlogPost>> => {
   const res = await fetch(`${config.baseUrl}/blog/${slug}`, {
     next: {
-      tags: ["blog_post"],
+      tags: [`blog_slug_${slug}`],
     },
   });
   return res.json();
 };
 
 // Admin Dashboard
-export const createBlog = async (blogData: FormData): Promise<any> => {
+export const getAllBlogs = async (): Promise<
+  IBlogPostResponse<IBlogPost[]>
+> => {
+  const res = await fetch(`${config.baseUrl}/blog`, {
+    cache: "no-store",
+  });
+  return res.json();
+};
+
+export const createBlog = async (
+  blogData: FormData
+): Promise<IBlogPostResponse<IBlogPost>> => {
   const token = await getValidToken();
 
   try {
@@ -38,9 +49,18 @@ export const createBlog = async (blogData: FormData): Promise<any> => {
       },
     });
 
-    revalidateTag("blogs");
+    const result = await res.json();
 
-    return res.json();
+    // Revalidate all blog lists
+    revalidateTag("published_blogs");
+
+    // Revalidate individual blog post
+    if (result.success && result.data?.slug) {
+      revalidateTag(`blog_slug_${result.data.slug}`);
+      revalidatePath(`/blogs/${result.data.slug}`);
+    }
+
+    return result;
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw new Error(error.message || "Something went wrong");
@@ -49,7 +69,9 @@ export const createBlog = async (blogData: FormData): Promise<any> => {
   }
 };
 
-export const getBlogById = async (id: string | number): Promise<any> => {
+export const getBlogById = async (
+  id: string | number
+): Promise<IBlogPostResponse<IBlogPost>> => {
   const token = await getValidToken();
 
   try {
@@ -77,7 +99,7 @@ export const getBlogById = async (id: string | number): Promise<any> => {
 export const updateBlog = async (
   id: string | number,
   blogData: FormData
-): Promise<any> => {
+): Promise<IBlogPostResponse<IBlogPost>> => {
   const token = await getValidToken();
 
   try {
@@ -88,8 +110,18 @@ export const updateBlog = async (
         Authorization: token,
       },
     });
-    revalidateTag("blogs");
-    return res.json();
+    const result = await res.json();
+
+    // Revalidate blog lists
+    revalidateTag("published_blogs");
+
+    // Revalidate individual blog post if update was successful
+    if (result.success && result.data?.slug) {
+      revalidateTag(`blog_slug_${result.data.slug}`);
+      revalidatePath(`/blogs/${result.data.slug}`);
+    }
+
+    return result;
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw new Error(error.message || "Failed to update blog");
@@ -98,7 +130,9 @@ export const updateBlog = async (
   }
 };
 
-export const deleteBlog = async (id: string | number): Promise<any> => {
+export const deleteBlog = async (
+  id: string | number
+): Promise<IBlogPostResponse<null>> => {
   const token = await getValidToken();
 
   try {
@@ -108,7 +142,8 @@ export const deleteBlog = async (id: string | number): Promise<any> => {
         Authorization: token,
       },
     });
-    revalidateTag("blogs");
+    revalidateTag("published_blogs");
+
     return res.json();
   } catch (error: unknown) {
     if (error instanceof Error) {

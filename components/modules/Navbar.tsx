@@ -68,7 +68,7 @@ const MobileNav = ({
   handleLogOut: () => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
+
   return (
     <div className="relative flex items-center justify-between p-2 md:hidden">
       <Link href="/">

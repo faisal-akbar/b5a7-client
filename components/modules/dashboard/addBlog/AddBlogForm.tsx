@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 import type { RichTextEditorHandle } from "@/components/modules/dashboard/richTextEditor/RichTextEditor";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +28,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import slugify from "slugify";
 import { toast } from "sonner";
 import z from "zod";
 import SingleImageUploader from "../SingleImageUploader";
@@ -73,7 +75,7 @@ export default function AddBlogForm() {
       excerpt: "",
       tags: [],
       isFeatured: false,
-      isPublished: false,
+      isPublished: true,
       thumbnail: undefined,
     },
   });
@@ -113,11 +115,14 @@ export default function AddBlogForm() {
 
     try {
       const res = await createBlog(formData);
+      console.log("Create blog response:", res);
       if (res.success) {
         toast.success(res.message);
         router.push("/dashboard/blogs");
-      } else {
+      } else if (!res.success) {
+        // @ts-expect-error
         if (res.errorMessages.length === 1) {
+          // @ts-expect-error
           toast.error(res.errorMessages[0].message);
         } else {
           toast.error(res.message || "Failed to create blog");
@@ -194,6 +199,16 @@ export default function AddBlogForm() {
                       className="h-11 text-base focus-visible:ring-2 focus-visible:ring-primary"
                     />
                     <FormMessage />
+                    <FormDescription>
+                      {field.value && (
+                        <>
+                          <span>Generated Slug: </span>
+                          {slugify(field.value, {
+                            lower: true,
+                          })}
+                        </>
+                      )}
+                    </FormDescription>
                   </FormItem>
                 )}
               />

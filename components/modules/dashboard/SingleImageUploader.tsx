@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react";
 

@@ -14,8 +14,8 @@ export default async function ProjectPage() {
           Projects
         </Heading>
         <p className="text-left  tracking-tight md:text-zinc-600 dark:text-zinc-400 text-3xl mr-3">
-          A showcase of my projects, experiments, and creative solutions I've
-          built.
+          A showcase of my projects, experiments, and creative solutions
+          I&#39;ve built.
         </p>
 
         <div>

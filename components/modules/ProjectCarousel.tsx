@@ -34,8 +34,6 @@ export const ProjectCarousel = ({
   projects,
   className,
 }: ProjectCarouselProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   if (!projects.length) {
     return null;
   }
@@ -47,11 +45,6 @@ export const ProjectCarousel = ({
         opts={{
           align: "start",
           loop: true,
-        }}
-        onSelect={(api) => {
-          if (api) {
-            setCurrentIndex(api.selectedScrollSnap());
-          }
         }}
       >
         <CarouselContent className="-ml-2 md:-ml-4">

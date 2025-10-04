@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import { Code, Eye, Loader2, Sparkles, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import slugify from "slugify";
 import { toast } from "sonner";
 import z from "zod";
 import SingleImageUploader from "../SingleImageUploader";
@@ -85,7 +87,7 @@ export default function AddProjectForm() {
       features: [],
       techStack: [],
       isFeatured: false,
-      isPublished: false,
+      isPublished: true,
       thumbnail: undefined,
     },
   });
@@ -115,7 +117,9 @@ export default function AddProjectForm() {
         router.push("/dashboard/projects");
       } else {
         console.error("Error creating project:", res);
+        // @ts-expect-error
         if (res.errorMessages.length === 1) {
+          // @ts-expect-error
           toast.error(res.errorMessages[0].message);
         } else {
           toast.error(res.message || "Failed to create project");
@@ -206,6 +210,16 @@ export default function AddProjectForm() {
                       className="h-11 text-base focus-visible:ring-2 focus-visible:ring-primary"
                     />
                     <FormMessage />
+                    <FormDescription>
+                      {field.value && (
+                        <>
+                          <span>Generated Slug: </span>
+                          {slugify(field.value, {
+                            lower: true,
+                          })}
+                        </>
+                      )}
+                    </FormDescription>
                   </FormItem>
                 )}
               />

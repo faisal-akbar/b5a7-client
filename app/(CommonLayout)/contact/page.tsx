@@ -10,7 +10,7 @@ export default function ContactPage() {
           Contact
         </Heading>
         <p className="text-left  tracking-tight md:text-zinc-600 dark:text-zinc-400 text-3xl mr-3">
-          Get in touch with me. I'm always interested in hearing about new
+          Get in touch with me. I&#39;m always interested in hearing about new
           opportunities and interesting projects.
         </p>
 
