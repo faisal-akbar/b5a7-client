@@ -59,8 +59,10 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const { data: blogs } = await getPublishedBlogs();
-  const { data: projects } = await getPublishedProjects();
+  const blogsResponse = await getPublishedBlogs();
+  const projectsResponse = await getPublishedProjects();
+  const blogs = blogsResponse?.data || [];
+  const projects = projectsResponse?.data || [];
 
   return (
     <Container className="mt-10 px-3">
@@ -151,9 +153,9 @@ export default async function HomePage() {
             Recent Project
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!projects.length && (
+          {!projects || projects.length === 0 ? (
             <Information message="No recent projects found." />
-          )}
+          ) : null}
 
           <div className="max-w-7xl mx-auto mt-10">
             <ProjectCarousel projects={projects.slice(0, MAX_PROJECT)} />
@@ -169,8 +171,9 @@ export default async function HomePage() {
             Recent Posts
           </h2>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!blogs ||
-            (!blogs.length && <Information message="No recent blogs found." />)}
+          {!blogs || blogs.length === 0 ? (
+            <Information message="No recent blogs found." />
+          ) : null}
 
           <div className="max-w-7xl mx-auto mt-10">
             <BlogCardGrid blogs={blogs.slice(0, MAX_BLOG)} columns={3} />

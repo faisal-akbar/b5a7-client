@@ -34,7 +34,7 @@ export const ProjectCarousel = ({
   projects,
   className,
 }: ProjectCarouselProps) => {
-  if (!projects.length) {
+  if (!projects || !Array.isArray(projects) || !projects.length) {
     return null;
   }
 
