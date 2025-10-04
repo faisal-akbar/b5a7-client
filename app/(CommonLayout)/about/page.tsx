@@ -101,9 +101,9 @@ export default async function AboutPage() {
 
             <div className="mt-6">
               <blockquote className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-xl italic border-l-4 border-blue-500 pl-6">
-                "Today i am gonna write a piece of code that will solve a
+                &#34;Today i am gonna write a piece of code that will solve a
                 problem and will affect millions of life, is what gets me
-                started for the day."
+                started for the day.&#34;
               </blockquote>
             </div>
           </div>
@@ -152,8 +152,8 @@ export default async function AboutPage() {
                   --- Cole Nussbaumer Knaflic
                 </li>
                 <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
-                  <strong>Storytelling with Data: Let's Practice!</strong> ---
-                  Cole Nussbaumer Knaflic
+                  <strong>Storytelling with Data: Let&#39;s Practice!</strong>{" "}
+                  --- Cole Nussbaumer Knaflic
                 </li>
                 <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
                   <strong>
