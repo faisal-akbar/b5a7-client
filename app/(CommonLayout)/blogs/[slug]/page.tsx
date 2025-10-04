@@ -1,3 +1,4 @@
+import { siteMetadata } from "@/app/siteMetaData";
 import { Container } from "@/components/modules/Container";
 import { TableOfContents } from "@/components/modules/TableOfContents";
 import ViewCounter from "@/components/modules/ViewCounter";
@@ -7,6 +8,7 @@ import { formatDate } from "@/lib/formatDate";
 import { getBlogBySlug, getBlogs } from "@/services/Blog";
 import { IBlogPost } from "@/types/blog";
 import { CalendarDays, Clock, Edit3 } from "lucide-react";
+import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -26,6 +28,88 @@ export async function generateStaticParams() {
   } catch (error) {
     console.error("Error generating static params:", error);
     return [];
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  try {
+    const { data: blog } = await getBlogBySlug(slug);
+
+    if (!blog) {
+      return {
+        title: "Blog Post Not Found",
+        description: "The requested blog post could not be found.",
+      };
+    }
+
+    const readingTime = calculateReadingTime(blog.content) || 5;
+    const publishedDate = new Date(blog.createdAt).toISOString();
+    const blogUrl = `${siteMetadata.siteUrl}/blogs/${slug}`;
+
+    // Create a clean description from blog content (first 160 characters)
+    const cleanContent = blog.content
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    const description =
+      cleanContent.length > 160
+        ? cleanContent.substring(0, 160) + "..."
+        : cleanContent;
+
+    return {
+      title: blog.title,
+      description,
+      keywords: blog.tags,
+      authors: [{ name: siteMetadata.author, url: siteMetadata.siteUrl }],
+      creator: siteMetadata.author,
+      openGraph: {
+        title: blog.title,
+        description,
+        url: blogUrl,
+        siteName: siteMetadata.openGraph.siteName,
+        images: [
+          {
+            url: blog.thumbnail,
+            width: 1200,
+            height: 630,
+            alt: blog.title,
+          },
+        ],
+        locale: siteMetadata.openGraph.locale,
+        type: "article" as const,
+        publishedTime: publishedDate,
+        authors: [siteMetadata.author],
+        tags: blog.tags,
+      },
+      twitter: {
+        card: "summary_large_image" as const,
+        title: blog.title,
+        description,
+        images: [blog.thumbnail],
+        creator: siteMetadata.twitter.creator,
+        site: siteMetadata.twitter.site,
+      },
+      alternates: {
+        canonical: blogUrl,
+      },
+      other: {
+        "article:author": siteMetadata.author,
+        "article:published_time": publishedDate,
+        "article:section": "Technology",
+        "article:tag": blog.tags.join(", "),
+        "article:reading_time": `${readingTime} min read`,
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Blog Post",
+      description: "A blog post by Faisal Akbar",
+    };
   }
 }
 

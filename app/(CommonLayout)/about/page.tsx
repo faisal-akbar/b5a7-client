@@ -3,6 +3,42 @@ import ContactForm from "@/components/modules/ContactForm";
 import { Container } from "@/components/modules/Container";
 import { Timeline } from "@/components/modules/timeline";
 import { Badge } from "@/components/ui/badge";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Learn more about Faisal Akbar, a dedicated Software Engineer based in New York City. Discover my passion for coding, technical skills, professional experience, and favorite books. Get in touch for opportunities and collaborations.",
+  openGraph: {
+    title: "About Faisal Akbar - Software Engineer & Full Stack Developer",
+    description:
+      "Learn more about Faisal Akbar, a dedicated Software Engineer based in New York City. Discover my passion for coding, technical skills, professional experience, and favorite books.",
+    url: `${siteMetadata.siteUrl}/about`,
+    siteName: siteMetadata.openGraph.siteName,
+    images: [
+      {
+        url: `${siteMetadata.siteUrl}/images/twitter-banner.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "About Faisal Akbar - Software Engineer Portfolio",
+      },
+    ],
+    locale: siteMetadata.openGraph.locale,
+    type: "profile" as const,
+  },
+  twitter: {
+    card: "summary_large_image" as const,
+    title: "About Faisal Akbar - Software Engineer & Full Stack Developer",
+    description:
+      "Learn more about Faisal Akbar, a dedicated Software Engineer based in New York City. Discover my passion for coding, technical skills, and professional experience.",
+    images: [`${siteMetadata.siteUrl}/images/twitter-banner.jpg`],
+    creator: siteMetadata.twitter.creator,
+    site: siteMetadata.twitter.site,
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/about`,
+  },
+};
 
 export default async function AboutPage() {
   return (

@@ -1,3 +1,4 @@
+import { siteMetadata } from "@/app/siteMetaData";
 import { Container } from "@/components/modules/Container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import { formatDate } from "@/lib/formatDate";
 import { getProjectBySlug, getProjects } from "@/services/Project";
 import { IProjectData } from "@/types";
 import { CalendarDays, Code, ExternalLink, Wrench } from "lucide-react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -33,6 +35,85 @@ export async function generateStaticParams() {
   } catch (error) {
     console.error("Error generating static params:", error);
     return [];
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  try {
+    const { data: project } = await getProjectBySlug(slug);
+
+    if (!project) {
+      return {
+        title: "Project Not Found",
+        description: "The requested project could not be found.",
+      };
+    }
+
+    const createdDate = new Date(project.createdAt).toISOString();
+    const projectUrl = `${siteMetadata.siteUrl}/projects/${slug}`;
+
+    // Create a clean description from project description
+    const cleanDescription = project.description
+      .replace(/<[^>]*>/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    const description =
+      cleanDescription.length > 160
+        ? cleanDescription.substring(0, 160) + "..."
+        : cleanDescription;
+
+    return {
+      title: project.title,
+      description,
+      keywords: project.techStack,
+      authors: [{ name: siteMetadata.author, url: siteMetadata.siteUrl }],
+      creator: siteMetadata.author,
+      openGraph: {
+        title: project.title,
+        description,
+        url: projectUrl,
+        siteName: siteMetadata.openGraph.siteName,
+        images: [
+          {
+            url: project.thumbnail,
+            width: 1200,
+            height: 630,
+            alt: project.title,
+          },
+        ],
+        locale: siteMetadata.openGraph.locale,
+        type: "website" as const,
+      },
+      twitter: {
+        card: "summary_large_image" as const,
+        title: project.title,
+        description,
+        images: [project.thumbnail],
+        creator: siteMetadata.twitter.creator,
+        site: siteMetadata.twitter.site,
+      },
+      alternates: {
+        canonical: projectUrl,
+      },
+      other: {
+        "project:author": siteMetadata.author,
+        "project:created_time": createdDate,
+        "project:technologies": project.techStack.join(", "),
+        "project:features": project.features.length.toString(),
+        "project:live_site": project.liveSite || "",
+        "project:source_code": project.projectLink || "",
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Project",
+      description: "A project by Faisal Akbar",
+    };
   }
 }
 

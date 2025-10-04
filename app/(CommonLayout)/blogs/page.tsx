@@ -1,8 +1,45 @@
+import { siteMetadata } from "@/app/siteMetaData";
 import { BlogCardGrid } from "@/components/modules/BlogCardGrid";
 import { Container } from "@/components/modules/Container";
 import { Heading } from "@/components/modules/Heading";
 import Information from "@/components/modules/Information";
 import { getBlogs } from "@/services/Blog";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Blogs",
+  description:
+    "Explore Faisal Akbar's collection of blog posts covering software engineering, web development, programming insights, and technical experiences. Discover thoughts, inspiration, and lessons learned in the world of technology.",
+  openGraph: {
+    title: "Blogs - Faisal Akbar's Technical Writing",
+    description:
+      "Explore Faisal Akbar's collection of blog posts covering software engineering, web development, programming insights, and technical experiences. Discover thoughts, inspiration, and lessons learned.",
+    url: `${siteMetadata.siteUrl}/blogs`,
+    siteName: siteMetadata.openGraph.siteName,
+    images: [
+      {
+        url: `${siteMetadata.siteUrl}/images/twitter-banner.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Faisal Akbar's Blog - Technical Writing and Programming Insights",
+      },
+    ],
+    locale: siteMetadata.openGraph.locale,
+    type: "website" as const,
+  },
+  twitter: {
+    card: "summary_large_image" as const,
+    title: "Blogs - Faisal Akbar's Technical Writing",
+    description:
+      "Explore Faisal Akbar's collection of blog posts covering software engineering, web development, programming insights, and technical experiences.",
+    images: [`${siteMetadata.siteUrl}/images/twitter-banner.jpg`],
+    creator: siteMetadata.twitter.creator,
+    site: siteMetadata.twitter.site,
+  },
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/blogs`,
+  },
+};
 
 export default async function BlogPage() {
   const { data: blogs } = await getBlogs();
