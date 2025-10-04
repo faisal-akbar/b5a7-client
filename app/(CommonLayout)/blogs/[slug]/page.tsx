@@ -22,6 +22,9 @@ interface BlogPostPageProps {
 export async function generateStaticParams() {
   try {
     const { data: blogs } = await getPublishedBlogs();
+    if (!blogs) {
+      return [];
+    }
     return blogs.map((blog: IBlogPost) => ({
       slug: blog.slug,
     }));

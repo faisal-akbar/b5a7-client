@@ -28,7 +28,9 @@ interface ProjectPageProps {
 export async function generateStaticParams() {
   try {
     const { data: projects } = await getPublishedProjects();
-
+    if (!projects) {
+      return [];
+    }
     return projects.map((project: IProjectData) => ({
       slug: project.slug,
     }));
