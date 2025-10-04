@@ -11,12 +11,12 @@ import { Button } from "@/components/ui/button";
 import { GithubIcon } from "@/components/ui/github";
 import { LinkedinIcon } from "@/components/ui/linkedin";
 import { TwitterIcon } from "@/components/ui/twitter";
-import { getAbout } from "@/services/About";
 
 import { getBlogs } from "@/services/Blog";
 import { getProjects } from "@/services/Project";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
+import { personalData, siteMetadata } from "../siteMetaData";
 
 const MAX_BLOG = 6;
 const MAX_PROJECT = 4;
@@ -24,7 +24,6 @@ const MAX_PROJECT = 4;
 export default async function HomePage() {
   const { data: blogs } = await getBlogs();
   const { data: projects } = await getProjects();
-  const { data: about } = await getAbout();
 
   return (
     <Container className="mt-10 px-3">
@@ -48,14 +47,14 @@ export default async function HomePage() {
               </h1> */}
               <div className="flex flex-col sm:flex-row sm:items-center">
                 <Heading className="text-left font-bold tracking-tight text-zinc-800 text-4xl  dark:text-zinc-100 sm:text-5xl mr-3">
-                  Faisal Akbar
+                  {siteMetadata.author}
                 </Heading>
                 <Flipper />
               </div>
               <p className="mt-6 text-zinc-600 text-base dark:text-zinc-300">
-                I’m Faisal Akbar, Software Engineer based in New York City.
-                Passionate, curious, and with zest and problem-solving skills,
-                always looking to deliver high-quality products.
+                I’m {siteMetadata.author}, Software Engineer based in New York
+                City. Passionate, curious, and with zest and problem-solving
+                skills, always looking to deliver high-quality products.
                 <span className="mt-3 block">
                   Find out more{" "}
                   <Link
@@ -87,7 +86,7 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
-        {about.skills.length > 0 && (
+        {personalData.skills.length > 0 && (
           <div>
             <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
               Skills
@@ -95,7 +94,7 @@ export default async function HomePage() {
             <hr className="border-gray-200 dark:border-gray-700" />
 
             <div className="max-w-7xl mx-auto mt-10 flex flex-wrap gap-3">
-              {about.skills.map((skill) => (
+              {personalData.skills.map((skill) => (
                 <Badge
                   key={skill}
                   variant="secondary"

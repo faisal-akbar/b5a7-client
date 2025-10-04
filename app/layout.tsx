@@ -5,7 +5,7 @@ import { ViewTransitions } from "next-view-transitions";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
-import siteMetadata from "./siteMetaData";
+import { siteMetadata } from "./siteMetaData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

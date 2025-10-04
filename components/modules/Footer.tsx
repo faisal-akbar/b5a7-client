@@ -3,7 +3,7 @@ import TwitterIcon from "../../icons/twitter-icon";
 
 import LinkedinIcon from "../../icons/linkedin-icon";
 
-import siteMetadata from "@/app/siteMetaData";
+import { siteMetadata } from "@/app/siteMetaData";
 import Link from "next/link";
 import MailIcon from "../../icons/mail-icon";
 

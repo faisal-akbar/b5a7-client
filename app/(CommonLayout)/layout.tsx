@@ -1,7 +1,7 @@
 import { Container } from "@/components/modules/Container";
 import Footer from "@/components/modules/Footer";
 import { Navbar } from "@/components/modules/Navbar";
-import siteMetadata from "../siteMetaData";
+import { siteMetadata } from "../siteMetaData";
 
 const footerMenu = [
   { href: "/blogs", title: "Blogs" },

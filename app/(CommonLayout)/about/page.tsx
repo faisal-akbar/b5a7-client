@@ -1,120 +1,201 @@
+import { personalData, siteMetadata } from "@/app/siteMetaData";
+import ContactForm from "@/components/modules/ContactForm";
 import { Container } from "@/components/modules/Container";
-import { TableOfContents } from "@/components/modules/TableOfContents";
+import { Timeline } from "@/components/modules/timeline";
 import { Badge } from "@/components/ui/badge";
-import { DownloadIcon } from "@/components/ui/download";
-import { calculateReadingTime } from "@/lib/calculateReadingTime";
-import { formatDate } from "@/lib/formatDate";
-import { getAbout } from "@/services/About";
-import { CalendarDays, Clock, Edit3 } from "lucide-react";
-import { Link } from "next-view-transitions";
-import Image from "next/image";
-import { notFound } from "next/navigation";
 
-export default async function BlogPostPage() {
-  const { data: about } = await getAbout();
-
-  if (!about) {
-    notFound();
-  }
-
-  const readingTime = calculateReadingTime(about.content) || 5;
-
+export default async function AboutPage() {
   return (
     <Container className="mt-10 px-3">
       <article>
-        <div>
+        <div className="space-y-15">
           <header>
             <div className="mb-10 space-y-2">
-              {/* Meta Information */}
-              <div className="flex flex-wrap gap-x-5 font-medium leading-6 text-base">
-                <dl>
-                  <div>
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="flex items-center gap-1.5">
-                      <CalendarDays className="h-4 w-4" />
-                      <time dateTime={about.createdAt}>
-                        {formatDate(about.createdAt)}
-                      </time>
-                    </dd>
-                  </div>
-                </dl>
-                <span className="flex items-center gap-1.5">
-                  <Edit3 className="h-5 w-5" />
-                  {about.content.split(/\s+/).length} words
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Clock className="h-5 w-5" />
-                  {readingTime} min read
-                </span>
-              </div>
-
               {/* Title */}
               <div>
                 <h1 className="mb-5 font-extrabold leading-9 tracking-tight text-gray-900 text-3xl dark:text-gray-100 sm:leading-10 sm:text-4xl md:leading-14 md:text-5xl">
-                  {about.title}
+                  About Me
                 </h1>
               </div>
+              <p className="text-left  tracking-tight md:text-zinc-600 dark:text-zinc-400 text-xl mr-3">
+                Hi, I&#39;m {siteMetadata.author} As a dedicated software
+                engineer, I specialize in creating sophisticated solutions for
+                challenging technical problems. My full-stack development
+                expertise drives me to build impactful, user-focused
+                applications that create meaningful value.
+              </p>
 
-              {/* Featured Image */}
-              <Image
-                alt={about.title}
-                src={about.thumbnail}
-                width={1080}
-                height={810}
-                className="aspect-ratio w-full rounded object-cover"
-                priority
-              />
-
-              {/* Skills */}
-              {about.skills && about.skills.length > 0 && (
-                <div className="py-3 xl:py-4">
-                  <h2 className="text-2xl font-bold mb-4">Skills</h2>
-                  <div className="flex flex-wrap items-center gap-2">
-                    {about.skills.map((skill: string, index: number) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="text-lg"
-                      >
-                        {skill}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {about.resume && (
-                <div className="py-3 xl:py-4">
-                  <h2 className="text-2xl font-bold mb-4">Resume</h2>
-                  <Link
-                    href={about.resume}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-lg flex items-center gap-2"
-                  >
-                    <DownloadIcon size={20} />
-                    <span>Download Resume</span>
-                  </Link>
-                </div>
-              )}
+              {/* <hr className="border-gray-200 dark:border-gray-700" /> */}
             </div>
           </header>
+          <div>
+            <Timeline />
+          </div>
 
-          {/* Content */}
-          <div className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:grid xl:divide-y-0 space-x-3 xl:grid-cols-4 xl:gap-x-6">
-            {/* Table of Contents - Hidden on mobile, visible on xl screens */}
-            <div className="hidden xl:sticky xl:top-[4.5rem] xl:block xl:h-[calc(100vh-4.5rem)] xl:flex-none xl:overflow-y-auto xl:py-16 xl:pr-6">
-              <TableOfContents contentId="blog-content" />
-            </div>
+          <div>
+            {/* Skills */}
+            {personalData.skills.length > 0 && (
+              <div>
+                <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
+                  Skills
+                </h2>
+                <hr className="border-gray-200 dark:border-gray-700" />
 
-            {/* Main Content */}
-            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pb-8 prose-headings:scroll-mt-24 dark:prose-dark">
-                <div
-                  id="blog-content"
-                  dangerouslySetInnerHTML={{ __html: about.content }}
-                  className="prose prose-lg max-w-none dark:prose-invert"
-                />
+                <div className="max-w-7xl mx-auto mt-10 flex flex-wrap gap-3">
+                  {personalData.skills.map((skill) => (
+                    <Badge
+                      key={skill}
+                      variant="secondary"
+                      className="text-lg px-3 py-1.5 hover:bg-secondary/80 transition-colors"
+                    >
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
               </div>
+            )}
+          </div>
+
+          {/* My Passion as a Coder */}
+          <div>
+            <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
+              My Passion as a Coder
+            </h2>
+            <hr className="border-gray-200 dark:border-gray-700" />
+
+            <div className="mt-6">
+              <blockquote className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-xl italic border-l-4 border-blue-500 pl-6">
+                "Today i am gonna write a piece of code that will solve a
+                problem and will affect millions of life, is what gets me
+                started for the day."
+              </blockquote>
+            </div>
+          </div>
+
+          {/* Some things about me */}
+          <div>
+            <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
+              Some things about me
+            </h2>
+            <hr className="border-gray-200 dark:border-gray-700" />
+
+            <div className="mt-6 space-y-4">
+              <p className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-xl">
+                I love learning new things, therefore I had worked on large set
+                of fields. I love creating new things and find solutions to real
+                life problems. I am passionate to solve problems using novel
+                ideas and iterate quickly on my ideas to optimize it for
+                scalability.
+              </p>
+
+              <p className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-xl">
+                I also improve myself everyday, optimizing my work flow in every
+                step of my life. I like things clean and organized.
+              </p>
+
+              <p className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-xl">
+                And I am fun to be with :D
+              </p>
+            </div>
+          </div>
+
+          {/* Favorite Books */}
+          <div>
+            <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
+              Favorite Books
+            </h2>
+            <hr className="border-gray-200 dark:border-gray-700" />
+
+            <div className="mt-6">
+              <ul className="space-y-3">
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>
+                    Storytelling with Data: A Data Visualization Guide for
+                    Business Professionals
+                  </strong>{" "}
+                  --- Cole Nussbaumer Knaflic
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>Storytelling with Data: Let's Practice!</strong> ---
+                  Cole Nussbaumer Knaflic
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>
+                    The Big Book of Dashboards: Visualizing Your Data Using
+                    Real-World Business Scenarios
+                  </strong>{" "}
+                  --- Steve Wexler, Jeffrey Shaffer, Andy Cotgreave
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>Visual Analytics with Tableau</strong> --- Alexander
+                  Loth
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>
+                    Practical Tableau: 100 Tips, Tutorials, and Strategies from
+                    a Tableau Zen Master
+                  </strong>{" "}
+                  --- Ryan Sleeper
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>
+                    Innovative Tableau: 100 More Tips, Tutorials, and Strategies
+                  </strong>{" "}
+                  --- Ryan Sleeper
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>
+                    Functional Art, The: An introduction to information graphics
+                    and visualization
+                  </strong>{" "}
+                  --- Alberto Cairo
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>Learning Shiny</strong> --- Hernan G. Resnizky
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>Business Statistics 2nd Edition</strong> --- Sharpe,
+                  Norean D., De Veaux, Richard D., Velleman, Paul
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>
+                    Python for Data Analysis: Data Wrangling with Pandas, NumPy,
+                    and IPython
+                  </strong>{" "}
+                  --- Wes McKinney
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>
+                    Practical Statistics for Data Scientists: 50 Essential
+                    Concepts
+                  </strong>{" "}
+                  --- Peter Bruce , Andrew Bruce
+                </li>
+                <li className="text-left tracking-tight md:text-zinc-600 dark:text-zinc-400 text-lg">
+                  <strong>
+                    Hadoop: The Definitive Guide: Storage and Analysis at
+                    Internet Scale
+                  </strong>{" "}
+                  --- Tom White
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h2 className="flex pb-4 font-bold tracking-tight text-neutral-900 text-3xl dark:text-neutral-100 sm:text-3xl md:text-4xl">
+              Get In Touch
+            </h2>
+            <hr className="border-gray-200 dark:border-gray-700" />
+            <p className="my-6 text-zinc-600 text-base dark:text-zinc-300">
+              I&apos;m always interested in hearing about new opportunities and
+              interesting projects. Feel free to reach out if you&apos;d like to
+              connect!
+            </p>
+
+            <div className="max-w-4xl mx-auto mt-10">
+              <ContactForm />
             </div>
           </div>
         </div>

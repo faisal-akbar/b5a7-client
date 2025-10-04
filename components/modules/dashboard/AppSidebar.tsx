@@ -1,4 +1,4 @@
-import siteMetadata from "@/app/siteMetaData";
+import { siteMetadata } from "@/app/siteMetaData";
 import {
   Sidebar,
   SidebarContent,
@@ -16,7 +16,6 @@ import {
 import { BookTextIcon } from "@/components/ui/book-text";
 import { FoldersIcon } from "@/components/ui/folders";
 import { PlusIcon } from "@/components/ui/plus";
-import { UserIcon } from "@/components/ui/user";
 import Link from "next/link";
 import Logo from "../../Logo";
 import { NavUser } from "../../ui/nav-user";
@@ -44,10 +43,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           icon: PlusIcon,
         },
       ],
-    },
-    {
-      title: "About Me",
-      items: [{ title: "About", url: "/dashboard/about", icon: UserIcon }],
     },
   ];
 
