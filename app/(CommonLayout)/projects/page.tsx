@@ -42,7 +42,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectPage() {
-  const { data: projects } = await getPublishedProjects();
+  const response = await getPublishedProjects();
+  const projects = response?.data || [];
 
   return (
     <Container className="mt-10 px-3">
@@ -57,10 +58,9 @@ export default async function ProjectPage() {
 
         <div>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!projects ||
-            (!projects.length && (
-              <Information message="No recent projects found." />
-            ))}
+          {!projects || projects.length === 0 ? (
+            <Information message="No recent projects found." />
+          ) : null}
 
           <div className="max-w-7xl mx-auto mt-10">
             <ProjectCardGrid projects={projects} columns={3} />

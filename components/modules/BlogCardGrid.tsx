@@ -22,6 +22,11 @@ export const BlogCardGrid = ({
     4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
   };
 
+  // Handle undefined or null blogs array
+  if (!blogs || !Array.isArray(blogs)) {
+    return null;
+  }
+
   return (
     <div
       className={cn("grid gap-8 items-stretch", gridCols[columns], className)}

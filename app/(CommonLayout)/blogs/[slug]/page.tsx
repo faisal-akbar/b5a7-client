@@ -21,8 +21,9 @@ interface BlogPostPageProps {
 
 export async function generateStaticParams() {
   try {
-    const { data: blogs } = await getPublishedBlogs();
-    if (!blogs) {
+    const response = await getPublishedBlogs();
+    const blogs = response?.data || [];
+    if (!blogs || !Array.isArray(blogs)) {
       return [];
     }
     return blogs.map((blog: IBlogPost) => ({

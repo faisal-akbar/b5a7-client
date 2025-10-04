@@ -42,7 +42,8 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
-  const { data: blogs } = await getPublishedBlogs();
+  const response = await getPublishedBlogs();
+  const blogs = response?.data || [];
 
   return (
     <Container className="mt-10 px-3">
@@ -57,8 +58,9 @@ export default async function BlogPage() {
 
         <div>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!blogs ||
-            (!blogs.length && <Information message="No recent blogs found." />)}
+          {!blogs || blogs.length === 0 ? (
+            <Information message="No recent blogs found." />
+          ) : null}
 
           <div className="max-w-7xl mx-auto mt-10">
             <BlogCardGrid blogs={blogs} columns={3} />

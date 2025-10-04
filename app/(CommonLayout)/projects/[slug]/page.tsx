@@ -27,8 +27,9 @@ interface ProjectPageProps {
 
 export async function generateStaticParams() {
   try {
-    const { data: projects } = await getPublishedProjects();
-    if (!projects) {
+    const response = await getPublishedProjects();
+    const projects = response?.data || [];
+    if (!projects || !Array.isArray(projects)) {
       return [];
     }
     return projects.map((project: IProjectData) => ({
@@ -122,7 +123,6 @@ export async function generateMetadata({
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const { data: project } = await getProjectBySlug(slug);
-  console.log(project);
 
   if (!project) {
     notFound();
