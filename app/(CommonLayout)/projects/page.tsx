@@ -57,7 +57,10 @@ export default async function ProjectPage() {
 
         <div>
           <hr className="border-gray-200 dark:border-gray-700" />
-          {!projects.length && <Information message="No projects found." />}
+          {!projects ||
+            (!projects.length && (
+              <Information message="No recent projects found." />
+            ))}
 
           <div className="max-w-7xl mx-auto mt-10">
             <ProjectCardGrid projects={projects} columns={3} />
