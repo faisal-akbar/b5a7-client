@@ -17,7 +17,7 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => {
       <main className="min-h-screen">{children}</main>
       <Footer
         footerMenu={footerMenu}
-        twitter={siteMetadata.twitter}
+        twitter={siteMetadata.twitterUrl}
         github={siteMetadata.github}
         email={siteMetadata.email}
         linkedin={siteMetadata.linkedin}

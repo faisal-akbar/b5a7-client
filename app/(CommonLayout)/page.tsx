@@ -14,12 +14,48 @@ import { TwitterIcon } from "@/components/ui/twitter";
 
 import { getBlogs } from "@/services/Blog";
 import { getProjects } from "@/services/Project";
+import type { Metadata } from "next";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { personalData, siteMetadata } from "../siteMetaData";
 
 const MAX_BLOG = 6;
 const MAX_PROJECT = 4;
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Welcome to Faisal Akbar's portfolio. Software Engineer based in New York City specializing in React, Next.js, TypeScript, and modern web technologies. Explore my projects, blog posts, and professional journey.",
+  openGraph: {
+    title: "Faisal Akbar - Software Engineer & Full Stack Developer",
+    description:
+      "Software Engineer based in New York City. Passionate about building high-quality web applications with React, Next.js, TypeScript, and modern technologies. Explore my projects, blog posts, and professional journey.",
+    url: siteMetadata.siteUrl,
+    siteName: siteMetadata.openGraph.siteName,
+    images: [
+      {
+        url: `${siteMetadata.siteUrl}/images/faisal-akbar.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Faisal Akbar - Software Engineer Portfolio",
+      },
+    ],
+    locale: siteMetadata.openGraph.locale,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Faisal Akbar - Software Engineer & Full Stack Developer",
+    description:
+      "Software Engineer based in New York City. Passionate about building high-quality web applications with React, Next.js, TypeScript, and modern technologies.",
+    images: [`${siteMetadata.siteUrl}/images/faisal-akbar.jpg`],
+    creator: siteMetadata.twitter.creator,
+    site: siteMetadata.twitter.site,
+  },
+  alternates: {
+    canonical: siteMetadata.siteUrl,
+  },
+};
 
 export default async function HomePage() {
   const { data: blogs } = await getBlogs();

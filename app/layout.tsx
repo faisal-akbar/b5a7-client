@@ -18,8 +18,52 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: siteMetadata.title,
+  metadataBase: new URL(siteMetadata.siteUrl),
+  title: {
+    default: siteMetadata.title,
+    template: `%s | ${siteMetadata.author}`,
+  },
   description: siteMetadata.description,
+  keywords: siteMetadata.keywords,
+  authors: [{ name: siteMetadata.author, url: siteMetadata.siteUrl }],
+  creator: siteMetadata.author,
+  openGraph: {
+    type: siteMetadata.openGraph.type,
+    locale: siteMetadata.openGraph.locale,
+    url: siteMetadata.openGraph.url,
+    title: siteMetadata.openGraph.title,
+    description: siteMetadata.openGraph.description,
+    siteName: siteMetadata.openGraph.siteName,
+    images: siteMetadata.openGraph.images,
+  },
+  twitter: {
+    card: siteMetadata.twitter.card,
+    title: siteMetadata.twitter.title,
+    description: siteMetadata.twitter.description,
+    images: siteMetadata.twitter.images,
+    creator: siteMetadata.twitter.creator,
+    site: siteMetadata.twitter.site,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "your-google-verification-code", // Add your Google Search Console verification code
+    yandex: "your-yandex-verification-code", // Add if needed
+    yahoo: "your-yahoo-verification-code", // Add if needed
+  },
+  alternates: {
+    canonical: siteMetadata.siteUrl,
+  },
+  category: "technology",
 };
 
 export default function RootLayout({
