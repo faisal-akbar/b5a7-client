@@ -325,7 +325,7 @@ export default function EditProjectForm({ projectId }: EditProjectFormProps) {
                         {features.map((feature) => (
                           <li
                             key={feature}
-                            className="text-sm flex items-center gap-2"
+                            className="text-sm flex items-center gap-2 border px-3 py-1 rounded bg-muted"
                           >
                             <span className="flex-1">{feature}</span>
                             <button
