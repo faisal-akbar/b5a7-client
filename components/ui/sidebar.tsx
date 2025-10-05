@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { PanelLeftOpenIcon } from "./panel-left-open";
 import { XIcon } from "./x";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
@@ -258,7 +259,7 @@ function SidebarTrigger({
   onClick,
   ...props
 }: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+  const { open, toggleSidebar } = useSidebar();
 
   return (
     <Button
@@ -274,7 +275,7 @@ function SidebarTrigger({
       {...props}
     >
       {/* <PanelLeftIcon /> */}
-      <XIcon />
+      {open ? <XIcon /> : <PanelLeftOpenIcon />}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
