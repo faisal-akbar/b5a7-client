@@ -96,7 +96,7 @@ const personalData = {
     },
     {
       company: "Healthfirst",
-      position: "Tableau Developer",
+      position: "Full Stack Developer",
       summary: "Led a team of developers and worked on high-impact projects.",
       from: "2019-12-01",
       to: "2020-08-20",
